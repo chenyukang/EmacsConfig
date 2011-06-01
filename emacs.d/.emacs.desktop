@@ -1,0 +1,28 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Fri Apr  9 19:09:13 2010
+;; Desktop file format version 206
+;; Emacs version 22.1.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '("semantic" "obal-auto-complete-mode t)" "hi" "web" "hist" "now" "history" "cedet" "buffer" "share" "get" "system_e" "handle_get"))
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/heipang/.emacs"
+  ".emacs"
+  'emacs-lisp-mode
+  '(hs-minor-mode auto-complete-mode yas/minor-mode hi-lock-mode semantic-idle-scheduler-mode semantic-idle-summary-mode semantic-idle-completions-mode senator-minor-mode highlight-symbol-mode)
+  6423
+  '(6304 t)
+  nil
+  nil
+  '((buffer-file-coding-system . mule-utf-8-unix) (overwrite-mode)))
+

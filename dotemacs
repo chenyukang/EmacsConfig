@@ -1,0 +1,796 @@
+;;======================  常用设置 ==============================;
+(setq load-path (cons (expand-file-name "~/.emacs.d") load-path))
+(setq inhibit-startup-message t)
+(tool-bar-mode nil)
+(scroll-bar-mode nil)
+(setq frame-title-format "%b@Emacs")
+
+(setq default-major-mode 'text-mode)
+					;(setq auto-image-file-mode t)
+(setq make-backup-files nil)
+;; 设定不产生备份文件
+(setq auto-save-mode nil)
+;;自动保存模式
+(setq-default make-backup-files nil)
+;; 不生成临时文件
+
+;;允许emacs和外部其他程序的粘贴
+(setq x-select-enable-clipboard t)
+(setq mouse-yank-at-point t)
+(setq require-final-newline t)
+(global-set-key [f4] 'other-window)
+
+;;'y' for 'yes', 'n' for 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq visible-bell t)
+(global-set-key [f10] 'undo) 
+(global-set-key (kbd "C-c y") 'delete-region)
+
+;;;; 显示行号：
+(setq column-number-mode t)
+(setq line-number-mode t)
+
+;;;; 显示时间
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(display-time)
+(global-set-key [C-tab] "\C-q\t") ; Control tab quotes a tab.
+
+;; 全屏
+(defun my-fullscreen ()
+  (interactive)
+  (x-send-client-message
+   nil 0 nil "_NET_WM_STATE" 32
+   '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
+
+
+
+(require 'highlight-current-line)
+(require 'browse-kill-ring)
+(require 'filladapt)
+
+;;thinks
+(require 'thinks)
+(require 'color-theme)
+;(color-theme-tty-dark)
+(color-theme-deep-blue)
+;(color-theme-pok-wob)
+;;(color-theme-matrix)
+;(color-theme-calm-forest)
+
+(require 'auto-complete)
+(global-auto-complete-mode t)
+(define-key ac-complete-mode-map "\C-n" 'ac-next)
+(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+
+;;==================== yasnippet ==================== ;
+(add-to-list 'load-path "~/.emacs.d/yasnippet")
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/yasnippet/snippets")
+
+(defface ac-yasnippet-candidate-face
+  '((t (:background "sandybrown" :foreground "black")))
+  "Face for yasnippet candidate.")
+
+(defface ac-yasnippet-selection-face
+  '((t (:background "coral3" :foreground "white")))
+  "Face for the yasnippet selected candidate.")
+ 
+(defvar ac-source-yasnippet
+  '((candidates . ac-yasnippet-candidate)
+    (action . yas/expand)
+    (candidate-face . ac-yasnippet-candidate-face)
+    (selection-face . ac-yasnippet-selection-face))
+  "Source for Yasnippet.")
+
+
+;;==================== end yasnippet ====================;
+(global-set-key [(kbd "TAB")] 'hippie-expand)
+(setq hippie-expand-try-functions-list
+      '(
+	ac-complete
+	senator-try-expand-semantic
+	yas/hippie-try-expand
+        try-expand-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-expand-list
+        try-expand-list-all-buffers
+        try-expand-line
+        try-expand-line-all-buffers
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-whole-kill
+
+	;; ... other expand functions ...
+	)
+      )
+
+
+
+(global-hi-lock-mode 1) 
+
+(set-frame-parameter (selected-frame) 'alpha (list 85 50))
+(add-to-list 'default-frame-alist (cons 'alpha (list 85 50)))
+
+(defun transform-window (a ab)
+  (set-frame-parameter (selected-frame) 'alpha (list a ab))
+  (add-to-list 'default-frame-alist (cons 'alpha (list a ab))))
+
+(global-set-key [(f7)] (lambda()
+                         (interactive)
+                         (transform-window 65 35)))
+
+(global-set-key [(f6)] 'loop-alpha)
+(setq alpha-list '((100 100) (95 65) (85 55) (75 45) (65 35)))
+(defun loop-alpha ()
+  (interactive)
+  (let ((h (car alpha-list))) ;; head value will set to
+    ((lambda (a ab)
+       (set-frame-parameter (selected-frame) 'alpha (list a ab))
+       (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
+       ) (car h) (car (cdr h)))
+    (setq alpha-list (cdr (append alpha-list (list h))))
+    ))
+
+(global-set-key[(f1)]
+	       (lambda()
+		 (interactive)
+		 (manual-entry(current-word))))
+
+(setq default-fill-column 140)
+(defun fill-buffer ()
+  "Fill each of the paragraphs in the buffer."
+  (interactive)
+  (let ((beg (point-min))
+        (end (point-max)))
+    (fill-region beg end)))
+(global-set-key (kbd "<C-tab>") 'fill-buffer)
+
+;;======================  常用设置结束 ==============================;
+;;=================== the font for Chinese ===============;
+(create-fontset-from-fontset-spec
+ "-*-courier-medium-R-normal--16-*-*-*-*-*-fontset-mymono,
+chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
+ )
+(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
+(set-frame-font "fontset-mymono")
+
+
+;; Setup GBK environment
+(set-terminal-coding-system 'euc-cn)
+(set-keyboard-coding-system 'euc-cn)
+(set-language-environment 'Chinese-GB)
+(setq locale-coding-system 'utf-8)
+(setq current-language-environment "Chinese-GBK")
+(prefer-coding-system 'utf-8)
+
+
+(when (fboundp 'utf-translate-cjk-mode)
+  ;; Load modified utf-translate-cjk-mode
+  (require 'gbk-utf-mode)
+  ;; Turn on utf-translate-cjk-mode
+  (utf-translate-cjk-mode 1)
+  ;; Setup X selection for unicode encoding
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
+
+
+
+
+;;=======================  设置窗口界面 =============================;
+(set-scroll-bar-mode nil)
+;;取消滚动栏
+
+;;(customize-set-variable 'scroll-bar-mode 'right))
+;;设置滚动栏在窗口右侧，而默认是在左侧
+(setq default-frame-alist
+      '((vertical-scroll-bars)
+	(top . 25)
+	(left . 45)
+	(width . 120)
+	(height . 70)
+	(tool-bar-lines . 0)
+	(menu-bar-lines . 1)
+	(right-fringe)
+	(left-fringe)))
+
+
+;; ;; 设置另外一些颜色：语法高亮显示的背景和主题，区域选择的背景和主题，二次选择的背景和选择
+;; (set-face-foreground 'highlight "white")
+;; (set-face-background 'highlight "blue")
+;; (set-face-foreground 'region "cyan")
+;; (set-face-background 'region "blue")
+;; (set-face-foreground 'secondary-selection "skyblue")
+;; (set-face-background 'secondary-selection "darkblue")
+
+;;下面的这个设置可以让光标指到某个括号的时候显示与它匹配的括号
+(show-paren-mode t)
+(setq show-paren-style 'parentheses)
+;;高亮显示选择区域
+(setq transient-mark-mode nil)
+;;显示行号
+(require 'linum)                                                   
+
+;;========================= end window =================================
+
+
+
+
+;;========================= programming ===============================
+;;;;我的C/C++语言编辑策略
+
+;;(require 'git)
+
+(defun my-indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\>")
+      (hippie-expand nil)
+    (indent-for-tab-command)))
+
+(require 'gprof)
+
+(load-file "~/.emacs.d/beautify-line.el")
+
+;;智能编译
+(require 'smart-compile)
+;;(load-file "~/.emacs.d/smart-compile.el")
+(global-set-key (kbd "<f9>") 'smart-compile)
+(global-set-key (kbd "<f10>") 'recompile)
+(global-set-key (kbd "C-c n") 'smart-compile-next-error) 
+
+
+(load-library "hideshow")
+(setq hs-minor-mode t)
+(add-hook 'c-mode-hook 'hs-minor-mode)
+(add-hook 'c++-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook 'hs-minor-mode)
+(add-hook 'perl-mode-hook 'hs-minor-mode)
+(add-hook 'php-mode-hookn 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+;;能把一个代码块缩起来，需要的时候再展开
+;; M-x hs-minor-mode
+;; C-c @ ESC C-s show all
+;; C-c @ ESC C-h hide all
+;; C-c @ C-s show block
+;; C-c @ C-h hide block
+;; C-c @ C-c toggle hide/show
+
+
+
+(defun my-c-mode-common-hook()
+  (setq tab-width 8 indent-tabs-mode nil)
+  ;; (hs-minor-mode t)
+  ;; hungry-delete and auto-newline
+  ;;(c-toggle-auto-hungry-state 1)
+  ;;按键定义
+  (c-set-style "stroustrup")	
+  (setq c-basic-offset 8) 
+  (linum-mode)
+  (doxymacs-mode)
+  (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
+  (define-key c-mode-base-map [(return)] 'newline-and-indent)
+  (define-key c-mode-base-map [(f7)] 'compile)
+  (define-key c-mode-base-map [(f8)] 'ff-get-other-file)
+  (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
+  ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
+  (define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
+  ;;预处理设置
+  (setq c-macro-shrink-window-flag t)
+  (setq c-macro-preprocessor "cpp")
+  (setq c-macro-cppflags " ")
+  (setq c-macro-prompt-flag t)
+  (setq abbrev-mode t)
+  )
+
+;;; add ifdef.el
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (require 'ifdef)
+	     (global-set-key [?\C-c ?\C-i] 'mark-ifdef)))
+
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(setq c-basic-offset 8)
+(setq c++-basic-offset 8)
+;;;;我的C++语言编辑策略
+(defun my-c++-mode-hook()
+  (setq tab-width 8 indent-tabs-mode nil)
+					;(setq c++-basic-offset 8) 
+  (define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
+  )
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+(setq abbrev-mode t)
+(global-set-key (kbd "C-=") 'dabbrev-expand)
+;;(global-set-key [(f5)] 'speedbar)
+(global-set-key (kbd "C-c h") 'hs-hide-block)
+(global-set-key (kbd "C-c u") 'hs-show-block)
+
+;;自动补全部分
+(load-file "~/.emacs.d/cedet-1.0pre7/common/cedet.el")
+(require 'cedet)
+(require 'semanticdb-global)
+(require 'semantic-load)
+(require 'semantic-ia)
+(require 'semantic-gcc)
+(require 'semantic-c)
+(setq semantic-load-turn-everything-on t)
+(autoload 'senator-try-expand-semantic "senator") ;;默认启动senator　
+(semantic-load-enable-minimum-features)
+(global-semanticdb-minor-mode 1)
+(semantic-load-enable-code-helpers)
+(global-set-key (kbd "C-c l") 'semantic-ia-complete-symbol-menu)
+					;(define-key global-map [f12] 'semantic-ia-fast-jump)
+(define-key global-map [f11] 'eassist-switch-h-cpp)
+
+
+(eval-after-load "semantic-complete"
+  '(setq semantic-complete-inline-analyzer-displayor-class
+	 semantic-displayor-ghost))
+(local-set-key (kbd "M-/") 'semantic-complete-analyze-inline) 
+
+;; 配置Semantic的检索范围:
+(setq semanticdb-project-roots
+      (list
+       (expand-file-name "/")))
+
+;; 设置semantic cache临时文件的路径，避免到处都是临时文件
+(setq semanticdb-default-save-directory
+      (expand-file-name "~/.emacs.d/semanticdb")) 
+;; C/C++语言启动时自动加载semantic对/usr/include的索引数据库
+(setq semanticdb-search-system-databases t)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (setq semanticdb-project-system-databases
+                  (list (semanticdb-create-database
+			 semanticdb-new-database-class
+			 "/usr/include")))))
+
+(defun my-cedet-hook ()
+  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle))
+(add-hook 'c-mode-common-hook 'my-cedet-hook)
+
+(defun my-semantic-hook ()
+  (imenu-add-to-menubar "TAGS"))
+(add-hook 'semantic-init-hooks 'my-semantic-hook)
+
+
+
+;;(semanticdb-enable-gnu-global-databases 'c-mode)
+;;(semanticdb-enable-gnu-global-databases 'c++-mode) 
+
+(load-file "~/.emacs.d/anything.el")
+(load-file "~/.emacs.d/anything-match-plugin.el")
+(load-file "~/.emacs.d/anything-complete.el")
+(require 'anything-complete)
+;;(anything-read-string-mode 1)
+;;Bind C-o to complete shell history
+(anything-complete-shell-history-setup-key "\C-o") 
+
+;; (add-to-list 'load-path "~/.emacs.d/company")
+;; (autoload 'company-mode "company" nil t)
+;; (company-mode)
+
+;;====================doxymacs====================;
+(add-to-list 'load-path "~/.emacs.d/doxymacs")
+(require 'doxymacs)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+(add-hook 'c++-mode-hook 'doxymacs-mode)
+
+(defun open-eshell-in-another-buffer-for-run ()
+  "Open eshell in other buffer for run a program"
+  (interactive)
+  (setq file-name 
+	(concat "./" (car (split-string 
+			   (file-name-nondirectory buffer-file-name) "\\."))))
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (eshell)
+  (goto-char (point-max))
+  (insert file-name))
+
+(global-set-key (kbd "C-c o") 'open-eshell-in-another-buffer-for-run)
+
+(defun open-eshell-and-test-program ()
+  (interactive)
+  (setq file-name 
+	(concat "KangTester " 
+		(concat "./"
+			(car (split-string 
+			      (file-name-nondirectory 
+			       buffer-file-name) "\\.")))))
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (eshell)
+  (goto-char (point-max))
+  (insert file-name))
+
+(global-set-key (kbd "C-x t") 'open-eshell-and-test-program)
+
+(defun open-eshell-now ()
+  "Open eshell"
+  (interactive)
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (eshell))
+(global-set-key (kbd "C-c e") 'open-eshell-now)
+
+
+(defun go-to-other-window-and-close-this-one()
+  "Go to other window and close current window"
+  (interactive)
+  (kill-buffer)
+  (next-buffer)
+  (delete-other-windows))
+(global-set-key (kbd "C-c k") 'go-to-other-window-and-close-this-one)
+
+(defun copy-current-buffer()
+  "Copy crerent buffer to kill ring : by Chen Yukang"
+  (interactive)
+  (setq position (point))
+  (kill-ring-save (point-min) (point-max))
+  (goto-char position))
+(global-set-key (kbd "C-c C-v") 'copy-current-buffer)
+
+(defun indent-current-buffer()
+  "indent current-buffer with C-c C-q"
+  (interactive)
+  (setq position (point))
+  (indent-region (point-min) (point-max))
+  (goto-char position))
+
+(global-set-key (kbd "C-c C-q") 'indent-current-buffer)
+
+;;=========subversion===============;
+(require 'psvn)
+
+(add-to-list 'load-path "~/.emacs.d/ecb")
+(require 'ecb) 
+(require 'ecb-autoloads)
+
+;;;; 各窗口间切换
+(global-set-key [M-left] 'windmove-left)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-up] 'windmove-up)
+(global-set-key [M-down] 'windmove-down)
+
+;;;; 隐藏和显示ecb窗口
+(define-key global-map [(control f1)] 'ecb-activate)
+(define-key global-map [(control f2)] 'ecb-deactivate)
+
+;;;; 使某一ecb窗口最大化
+(define-key global-map [(control f5)] 'ecb-maximize-window-directories)
+(define-key global-map [(control f6)] 'ecb-maximize-window-sources)
+(define-key global-map [(control f7)] 'ecb-maximize-window-methods)
+(define-key global-map [(control f8)] 'ecb-maximize-window-history)
+;;;; 恢复原始窗口布局
+(define-key global-map [(control f9)] 'ecb-restore-default-window-sizes)
+
+
+
+;;===================== python promgramming mode ====================;
+(require 'ctypes)
+(setq auto-mode-alist
+      (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist
+      (cons '("python" . python-mode)
+	    interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+;;; add these lines if you like color-based syntax highlighting
+
+;;==================== end python ====================;;
+
+;; -*- Emacs-Lisp -*-
+;; Time-stamp: <2009-11-27 15:12:23 Friday by ahei>
+(require 'highlight-symbol)
+(require 'sgml-mode)
+(setq highlight-symbol-idle-delay 0.5)
+(highlight-symbol-mode 1)
+(defun highlight-symbol-mode-on ()
+  "Turn on function `highlight-symbol-mode'."
+  (highlight-symbol-mode 1))
+(defun highlight-symbol-mode-off ()
+  "Turn off function `highlight-symbol-mode'."
+  (highlight-symbol-mode -1))
+(dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook java-mode-hook
+				     c-mode-common-hook text-mode-hook ruby-mode-hook html-mode-hook))
+  (add-hook hook 'highlight-symbol-mode-on))
+(global-set-key (kbd "C-c M-n") 'highlight-symbol-next)
+(global-set-key (kbd "C-c M-p") 'highlight-symbol-prev)
+(global-set-key (kbd "C-c r"  ) 'highlight-symbol-query-replace)
+(global-set-key (kbd "C-c M-N") 'highlight-symbol-next-in-defun)
+(global-set-key (kbd "C-c M-P") 'highlight-symbol-prev-in-defun)
+
+;;==================== end programming ===================;
+
+;;==================== other extension ===================;
+;;some extension
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+
+(require 'tabbar)
+(tabbar-mode)
+(global-set-key (kbd "C-c b") 'tabbar-backward-group)
+(global-set-key (kbd "C-c f") 'tabbar-forward-group)
+(global-set-key (kbd "C-,") 'tabbar-backward)
+(global-set-key (kbd "C-.") 'tabbar-forward)
+
+
+;; (require 'swbuff)
+;; (global-set-key (kbd "") 'swbuff-switch-to-previous-buffer)
+;; (global-set-key (kbd "") 'swbuff-switch-to-next-buffer)
+;; (setq swbuff-exclude-buffer-regexps 
+;;       '("^ " "\\*.*\\*"))
+
+;; (setq swbuff-status-window-layout 'scroll)
+;; (setq swbuff-clear-delay 1)
+;; (setq swbuff-separator "||")
+;; (setq swbuff-window-min-text-height 1)
+
+
+(require 'xcscope)
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (require 'xcscope)))
+(add-hook 'c++-mode-common-hook
+	  '(lambda() 
+	     (require 'xcscope)))
+
+
+(load "desktop") 
+(desktop-save-mode) 
+					;(desktop-read)
+
+;;the go-to-char
+(defun wy-go-to-char (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `wy-go-to-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  (interactive "p\ncGo to char: ")
+  (search-forward (string char) nil nil n)
+  (while (char-equal (read-char)
+		     char)
+    (search-forward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event)))
+
+(define-key global-map (kbd "C-c a") 'wy-go-to-char)
+(define-key global-map (kbd "C-c t") 'find-tag)
+(put 'narrow-to-region 'disabled nil)
+
+
+
+;;convert text files between unix and dos
+(defun dos-unix () (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\r" nil t) (replace-match "")))
+(defun unix-dos () (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\n" nil t) (replace-match "\r\n")))
+
+
+
+
+(require 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(setq auto-mode-alist
+      (append '(("\\.cpp$" . c++-mode)
+		("\\.hpp$" . c++-mode)
+		("\\.h$" . c++-mode)
+		("\\.lsp$" . lisp-mode)
+		("\\.scm$" . scheme-mode)
+		("\\.pl$" . perl-mode)
+		) auto-mode-alist))
+
+
+;; Pretty diff mode
+(autoload 'ediff-buffers "ediff" "Intelligent Emacs interface to diff" t)
+(autoload 'ediff-files "ediff" "Intelligent Emacs interface to diff" t)
+(autoload 'ediff-files-remote "ediff"
+  "Intelligent Emacs interface to diff")
+;;======================= end other extension ==================;
+
+;;==================== clear some buffers ======================;
+;;{{{ 删除一些临时的buffers，少占我的内存
+(defvar my-clean-buffers-names
+  '("\\*Completions" "\\*Compile-Log" "\\*.*[Oo]utput\\*$" "\\*info"  "\\*Ibuffer\\*" "\\*cscope\\*"
+    "\\*Apropos" "\\*compilation" "\\*Customize" "\\*Calc""\\keywiz-scores"
+    "\\*BBDB\\*" "\\*trace of SMTP" "\\*vc" "\\*cvs" "\\*keywiz"
+    "\\*WoMan-Log" "\\*tramp" "\\*desktop\\*" ;;"\\*Async Shell Command"
+    )
+  "List of regexps matching names of buffers to kill.")
+
+(defvar my-clean-buffers-modes
+  '(help-mode )				;Info-mode)
+  "List of modes whose buffers will be killed.")
+
+(defun my-clean-buffers()
+  "Kill buffers as per `my-clean-buffer-list' and `my-clean-buffer-modes'."
+  (interactive)
+  (let (string buffname)
+    (mapcar (lambda (buffer)
+              (and (setq buffname (buffer-name buffer))
+                   (or (catch 'found
+                         (mapcar '(lambda (name)
+                                    (if (string-match name buffname)
+                                        (throw 'found t)))
+                                 my-clean-buffers-names)
+                         nil)
+                       (save-excursion
+                         (set-buffer buffname)
+                         (catch 'found
+                           (mapcar '(lambda (mode)
+                                      (if (eq major-mode mode)
+                                          (throw 'found t)))
+                                   my-clean-buffers-modes)
+                           nil)))
+                   (kill-buffer buffname)
+                   (setq string (concat string
+                                        (and string ", ") buffname))))
+            (buffer-list))
+    (if string (message "清理buffer: %s" string)
+					;(if string (message "Deleted: %s" string)
+      (message "没有多余的buffer"))))
+
+;;==================== 查单词 ====================;
+;;查英语单词
+(require 'sdcv)
+(setq sdcv-dictionary-simple-list ;; a simple dictionary list
+      '(
+	"21世纪英汉汉英双向词典"
+	"懒虫简明英汉词典"
+        "懒虫简明汉英词典"
+        "KDic11万英汉词典"
+	))
+
+(setq sdcv-dictionary-complete-list ;;a complete dictionary list
+      '(
+	"21世纪英汉汉英双向词典"
+	"KDic11万英汉词典"
+        "懒虫简明英汉词典"
+        "朗道英汉字典5.0"
+        "XDICT英汉辞典"
+        "朗道汉英字典5.0"
+        "XDICT汉英辞典"
+        "懒虫简明汉英词典"
+        "牛津英汉双解美化版"
+        "stardict1.3英汉辞典"
+        "英汉汉英专业词典"
+        "CDICT5英汉辞典"
+        "Jargon"
+        "FOLDOC"
+	"WordNet"
+        ))
+(global-set-key (kbd "C-c q") 'sdcv-search-input)
+					;
+(add-to-list 'load-path "~/.emacs.d/")
+(load-file  "~/.emacs.d/xml-rpc.el")
+(load-file  "~/.emacs.d/weblogger.el")
+(require 'weblogger)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ecb-directories-menu-user-extension-function (quote ignore))
+ '(ecb-eshell-auto-activate nil)
+ '(ecb-eshell-enlarge-when-eshell nil)
+ '(ecb-eshell-fit-window-to-command-output nil)
+ '(ecb-eshell-synchronize nil)
+ '(ecb-history-menu-user-extension-function (quote ignore))
+ '(ecb-layout-name "right1")
+ '(ecb-layout-window-sizes nil)
+ '(ecb-methods-menu-user-extension-function (quote ignore))
+ '(ecb-options-version "2.40")
+ '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
+ '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (mouse-face highlight help-echo tree-buffer-help-echo-fn))))))
+ '(ecb-sources-menu-user-extension-function (quote ignore))
+ '(ecb-tip-of-the-day nil)
+ '(weblogger-config-alist (quote (("default" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+
+;;==================== w3m ====================
+(autoload 'w3m "w3m" "interface for w3m on emacs" t)
+(setq browse-url-browser-function 'w3m-browse-url)
+(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+;; optional keyboard short-cut
+(global-set-key "\C-xm" 'browse-url-at-point)
+(setq w3m-command-arguments '("-cookie" "-T"))
+(setq w3m-use-cookies t)
+(setq w3m-home-page "http://www.google.com.cn")
+(setq w3m-default-display-inline-image t)
+(setq w3m-default-toggle-inline-images t)
+(setq w3m-use-form t)
+(setq w3m-tab-width 8)
+(setq w3m-use-cookies t)
+(setq w3m-use-toolbar t)
+(setq w3m-use-mule-ucs t)
+(setq w3m-fill-column 120)
+(setq w3m-default-display-inline-image t)
+(setq w3m-default-toggle-inline-images t)
+(setq w3m-display-inline-image t)
+
+
+
+;;==================== muse ==================== 
+(load-file "~/.emacs.d/muse_kang.el")
+
+;;==================== mail ====================
+(add-to-list 'load-path
+             "~/.emacs.d/mew-6.3")
+(autoload 'mew "mew" nil t)
+(autoload 'mew-send "mew" nil t)
+(if (boundp 'read-mail-command)
+    (setq read-mail-command 'mew))
+(autoload 'mew-user-agent-compose "mew" nil t)
+(if (boundp 'mail-user-agent)
+    (setq mail-user-agent 'mew-user-agent))
+(if (fboundp 'define-mail-user-agent)
+    (define-mail-user-agent
+      'mew-user-agent
+      'mew-user-agent-compose
+      'mew-draft-send-message
+      'mew-draft-kill
+      'mew-send-hook))
+(setq user-full-name "moorekang")
+(setq user-mail-address "moorekang@gmail.com")
+
+
+
+;;==================== gdb ==================== ;;
+(setq gdb-many-windows t)
+;;...
+(load-library "multi-gud.el")
+(load-library "multi-gdb-ui.el")
+(global-set-key [(f7)] 'gud-step)
+(global-set-key [(f8)] 'gud-next)
+
+
+
+;; (load-file "~/.emacs.d/layoutrestore.el")
+;; (require 'layout-restore)
+;; (global-set-key [?\C-c ?l] 'layout-save-current)
+;; (global-set-key [?\C-c ?\C-l ?\C-l] 'layout-restore)
+;; (global-set-key [?\C-c ?\C-l ?\C-c] 'layout-delete-current)
+
+(load-file "~/.emacs.d/jump-dls.el")
+(require 'jump)
+(global-set-key [f12] 'jump-symbol-at-point)
+(global-set-key [(shift f12)] 'go-back-point)
+
+(defun jump-at-point()
+  (interactive)
+  (setq position (point))
+  (jump-symbol-at-point)
+  (goto-char position))
+
+(defun go-back-point ()
+  (interactive)
+  (delete-other-windows)
+  (next-buffer))
+
+(put 'set-goal-column 'disabled nil)
+
+(add-to-list 'load-path "~/.emacs.d/magit")
+(load-file "~/.emacs.d/magit/magit.el")
+(require 'magit)

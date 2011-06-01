@@ -1,0 +1,61 @@
+Mew 6.3 (2009/11/20)
+
+* mew-find-cs-region for iso-8859-1 and iso-8859-15.
+* mew-pgp-signer for old PGP.
+	Tatsuya Kinoshita <tats@vega.ocn.ne.jp>
+
+Mew 6.3 release candidate 2 (2009/11/02)
+
+* Maintaining backward compatibility of mew-find-cs-region on Emacs 23.
+* A patch for writefln() of d/smew.
+	Masamichi HOSODA <trueroad@zob.ne.jp>
+
+Mew 6.3 release candidate 1 (2009/10/16)
+
+* Flush in cmew.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* Reducing stat() in cmew.
+	Takahiro Kambe <taca@back-street.net>
+* Using last-command-event instead of last-command-char.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* Binding large-file-warning-threshold to nil in
+  mew-find-file-noselect2.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+
+Mew 6.2.52 (2009/08/12)
+
+* A patch for mew-warn-addresses.
+	Yu-ji Hosokawa <yu-ji@hoso.net>
+* Unibite buffer for image.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* mode-id hack.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* UTF-8 hack for Emacs 23.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* A patch for warning.
+	Hayashi Masahiro <mhayashi1120@gmail.com>
+
+Mew 6.2.51 (2009/02/16)
+
+* Supporting NTEmacs.
+	Hayashi Masahiro <mhayashi1120@gmail.com>
+* A patch for mew-fill-match-adaptive-prefix.
+	Takashi Masuda <masutaka@nifty.com>
+* Rescuing non-balanced parenthesis of addresses.
+* A patch for mew-input-folder-search-setup2
+	KOIE Hidetaka <hide@koie.org>
+* A patch for Makefile.
+	Kazuyoshi Furutaka <furutaka@jb3.so-net.ne.jp>
+* Refile uses mew-case instead of mew-case-default.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+
+Mew 6.2.50 (2009/01/21)
+
+* Set IMAP's \Seen flag onto refiled messages.
+* Changing the timing of longlines-mode off.
+* A bug fix for mew-cite-prefix-username.
+* A patch for join.
+	Hideyuki SHIRAI <shirai@meadowy.org>
+* chapter -> section in info.
+* Defining mew-fill-match-adaptive-prefix to save Emacs 21.4.
+
