@@ -52,11 +52,12 @@
 ;;thinks
 (require 'thinks)
 (require 'color-theme)
-;(color-theme-tty-dark)
+					;(color-theme-tty-dark)
 (color-theme-deep-blue)
-;(color-theme-pok-wob)
+(color-theme-dark-laptop)
+					;(color-theme-pok-wob)
 ;;(color-theme-matrix)
-;(color-theme-calm-forest)
+					;(color-theme-calm-forest)
 
 (require 'auto-complete)
 (global-auto-complete-mode t)
@@ -76,7 +77,7 @@
 (defface ac-yasnippet-selection-face
   '((t (:background "coral3" :foreground "white")))
   "Face for the yasnippet selected candidate.")
- 
+
 (defvar ac-source-yasnippet
   '((candidates . ac-yasnippet-candidate)
     (action . yas/expand)
@@ -140,7 +141,7 @@
 		 (interactive)
 		 (manual-entry(current-word))))
 
-(setq default-fill-column 140)
+(setq default-fill-column 150)
 (defun fill-buffer ()
   "Fill each of the paragraphs in the buffer."
   (interactive)
@@ -152,7 +153,7 @@
 ;;======================  常用设置结束 ==============================;
 ;;=================== the font for Chinese ===============;
 (create-fontset-from-fontset-spec
- "-*-courier-medium-R-normal--16-*-*-*-*-*-fontset-mymono,
+ "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
 chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
 chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
 chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
@@ -182,19 +183,18 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 
 
 ;;=======================  设置窗口界面 =============================;
-(set-scroll-bar-mode nil)
 ;;取消滚动栏
+(set-scroll-bar-mode nil)
 
-;;(customize-set-variable 'scroll-bar-mode 'right))
 ;;设置滚动栏在窗口右侧，而默认是在左侧
 (setq default-frame-alist
       '((vertical-scroll-bars)
-	(top . 25)
+	(top . 20)
 	(left . 45)
 	(width . 120)
 	(height . 70)
 	(tool-bar-lines . 0)
-	(menu-bar-lines . 1)
+	(menu-bar-lines . 0)
 	(right-fringe)
 	(left-fringe)))
 
@@ -262,13 +262,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 
 
 (defun my-c-mode-common-hook()
-  (setq tab-width 8 indent-tabs-mode nil)
+  (setq tab-width 4 indent-tabs-mode nil)
   ;; (hs-minor-mode t)
   ;; hungry-delete and auto-newline
   ;;(c-toggle-auto-hungry-state 1)
   ;;按键定义
   (c-set-style "stroustrup")	
-  (setq c-basic-offset 8) 
+  (setq c-basic-offset 4) 
   (linum-mode)
   (doxymacs-mode)
   (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
@@ -295,12 +295,12 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
-(setq c-basic-offset 8)
-(setq c++-basic-offset 8)
+(setq c-basic-offset 4)
+(setq c++-basic-offset 4)
 ;;;;我的C++语言编辑策略
 (defun my-c++-mode-hook()
   (setq tab-width 8 indent-tabs-mode nil)
-					;(setq c++-basic-offset 8) 
+  (setq c++-basic-offset 4) 
   (define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
   )
 
@@ -593,6 +593,7 @@ occurence of CHAR."
 		("\\.lsp$" . lisp-mode)
 		("\\.scm$" . scheme-mode)
 		("\\.pl$" . perl-mode)
+		("\\.hs$". haskell-mode)
 		) auto-mode-alist))
 
 
@@ -680,7 +681,12 @@ occurence of CHAR."
 (load-file  "~/.emacs.d/xml-rpc.el")
 (load-file  "~/.emacs.d/weblogger.el")
 (require 'weblogger)
+(setq weblogger-weblog-alist nil)
+(add-hook 'weblogger-entry-mode-hook
+	  (lambda ()
+	    (setq fill-column 4000)))
 
+;;please replace to yourself passwd
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -697,10 +703,10 @@ occurence of CHAR."
  '(ecb-methods-menu-user-extension-function (quote ignore))
  '(ecb-options-version "2.40")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
- '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (mouse-face highlight help-echo tree-buffer-help-echo-fn))))))
+ '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (help-echo tree-buffer-help-echo-fn mouse-face highlight))))))
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
- '(weblogger-config-alist (quote (("default" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1")))))
+ '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "passwd" "1")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -712,23 +718,24 @@ occurence of CHAR."
 ;;==================== w3m ====================
 (autoload 'w3m "w3m" "interface for w3m on emacs" t)
 (setq browse-url-browser-function 'w3m-browse-url)
+(load-file "~/.emacs.d/w3m-config.el")
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-;; optional keyboard short-cut
-(global-set-key "\C-xm" 'browse-url-at-point)
-(setq w3m-command-arguments '("-cookie" "-T"))
-(setq w3m-use-cookies t)
-(setq w3m-home-page "http://www.google.com.cn")
-(setq w3m-default-display-inline-image t)
-(setq w3m-default-toggle-inline-images t)
-(setq w3m-use-form t)
-(setq w3m-tab-width 8)
-(setq w3m-use-cookies t)
-(setq w3m-use-toolbar t)
-(setq w3m-use-mule-ucs t)
-(setq w3m-fill-column 120)
-(setq w3m-default-display-inline-image t)
-(setq w3m-default-toggle-inline-images t)
-(setq w3m-display-inline-image t)
+;; ;; optional keyboard short-cut
+;; (global-set-key "\C-xm" 'browse-url-at-point)
+;; (setq w3m-command-arguments '("-cookie" "-T"))
+;; (setq w3m-use-cookies t)
+;; (setq w3m-home-page "http://www.google.com.cn")
+;; (setq w3m-default-display-inline-image t)
+;; (setq w3m-default-toggle-inline-images t)
+;; (setq w3m-use-form t)
+;; (setq w3m-tab-width 8)
+;; (setq w3m-use-cookies t)
+;; (setq w3m-use-toolbar t)
+;; (setq w3m-use-mule-ucs t)
+;; (setq w3m-fill-column 120)
+;; (setq w3m-default-display-inline-image t)
+;; (setq w3m-default-toggle-inline-images t)
+;; (setq w3m-display-inline-image t)
 
 
 
@@ -740,6 +747,7 @@ occurence of CHAR."
              "~/.emacs.d/mew-6.3")
 (autoload 'mew "mew" nil t)
 (autoload 'mew-send "mew" nil t)
+(setq mew-use-cached-passwd t)
 (if (boundp 'read-mail-command)
     (setq read-mail-command 'mew))
 (autoload 'mew-user-agent-compose "mew" nil t)
@@ -752,10 +760,18 @@ occurence of CHAR."
       'mew-draft-send-message
       'mew-draft-kill
       'mew-send-hook))
-(setq user-full-name "moorekang")
-(setq user-mail-address "moorekang@gmail.com")
-
-
+(setq mew-pop-size 0)
+(setq mew-smtp-auth-list nil)
+(setq toolbar-mail-reader 'Mew)
+(set-default 'mew-decode-quoted 't) 
+(when (boundp 'utf-translate-cjk)
+  (setq utf-translate-cjk t)
+  (custom-set-variables
+   '(utf-translate-cjk t)))
+(if (fboundp 'utf-translate-cjk-mode)
+    (utf-translate-cjk-mode 1))
+(require 'flyspell) ;;英文的拼写检查
+(load-file "~/.emacs.d/mew-6.3/kang-config.el")
 
 ;;==================== gdb ==================== ;;
 (setq gdb-many-windows t)
@@ -794,3 +810,179 @@ occurence of CHAR."
 (add-to-list 'load-path "~/.emacs.d/magit")
 (load-file "~/.emacs.d/magit/magit.el")
 (require 'magit)
+
+
+;;==================== micro blog ====================;;
+(add-to-list 'load-path "~/.emacs.d/twittering")
+(require 'twittering-mode)
+(setq twittering-use-master-password t)
+(setq twittering-allow-insecure-server-cert t)
+(setq twittering-oauth-use-ssl nil)
+(setq twittering-use-ssl nil)
+(twittering-enable-unread-status-notifier)
+(setq-default twittering-icon-mode t)
+
+(setq twittering-initial-timeline-spec-string `("http://weibo.com/moorekang"
+						))
+
+
+(setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
+
+
+(defun flush-up-window()
+  (interactive)
+  (other-window 1)
+  (revert-buffer t t)
+  (other-window 1))
+
+(global-set-key [f5] 'flush-up-window)
+
+(defun close-this-buffer()
+  (interactive)
+  (kill-buffer (buffer-name)))
+(global-set-key (kbd "C-w") 'close-this-buffer)
+(global-set-key (kbd "C-c C-k") 'kill-region)
+
+(load-file "~/.emacs.d/auto/autoconfig.el")
+
+
+
+(defun is-late-now()
+  "Check if it is now late, emmm, go to sleep"
+  (let ((hr (nth 2 (decode-time (current-time))))
+	(minute (nth 1 (decode-time (current-time)))))
+    (and (and (>= hr 22) 
+	      (>= minute 40)
+	      (message "prepare sleep now...."))
+	 (>= minute 50))))
+
+(defun my-next-line()
+  (interactive)
+  (if (is-late-now)
+      (message "late now, go to sleep ... baby!")
+    (next-line)))
+
+(defun my-prev-line()
+  (interactive)
+  (if (is-late-now)
+      (message "late now, go to sleep ... baby!")
+    (previous-line)))
+
+;(global-set-key (kbd "C-n") 'my-next-line)
+;(global-set-key (kbd "C-p") 'my-prev-line)
+(global-set-key (kbd "C-n") 'next-line)
+(global-set-key (kbd "C-p") 'previous-line)
+
+(defadvice previous-line (before check-is-later)
+  (if (is-late-now)
+      (progn 
+	(message "late now, prepare go to sleep"))))
+	
+
+;; (ad-activate 'previous-line)
+
+
+
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (let ((col (current-column))
+        start
+        end)
+    (beginning-of-line)
+    (setq start (point))
+    (end-of-line)
+    (forward-char)
+    (setq end (point))
+    (let ((line-text (delete-and-extract-region start end)))
+      (forward-line n)
+      (insert line-text)
+      ;; restore point to original column in moved line
+      (forward-line -1)
+      (forward-char col))))
+
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
+
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
+
+(global-set-key (kbd "<M-down>") 'move-line-down)
+(global-set-key (kbd "<M-up>") 'move-line-up)
+
+
+
+
+;; -*- Emacs-Lisp -*-
+ 
+;; Time-stamp: <2010-02-25 19:35:15 Thursday by ahei>
+ 
+(require 'pulse)
+ 
+(defadvice exchange-point-and-mark-nomark (after pulse-advice activate)
+  "Cause the line that is `goto'd to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p)
+		 (> (abs (- (point) (mark))) 400))
+	(pulse-momentary-highlight-one-line (point))))
+ 
+(defadvice switch-to-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+ 
+(defadvice ido-switch-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+ 
+(defadvice switch-to-other-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+ 
+(defadvice visit-.emacs (after pulse-advice activate)
+  "Cause the current line of .emacs buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+ 
+(defadvice beginning-of-buffer (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+
+(defadvice previous-line (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+(defadvice next-line (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+
+(defadvice scroll-up (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+
+(defadvice scroll-down (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+(defadvice newline (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
+
+(pulse-toggle-integration-advice (if window-system 1 -1))
+
+
+
