@@ -706,7 +706,8 @@ occurence of CHAR."
  '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (help-echo tree-buffer-help-echo-fn mouse-face highlight))))))
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
- '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "passwd" "1")))))
+ '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") 
+ 			  ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "passwd" "1")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
