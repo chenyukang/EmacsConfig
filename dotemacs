@@ -985,5 +985,11 @@ occurence of CHAR."
 
 (pulse-toggle-integration-advice (if window-system 1 -1))
 
+(require 'highlight-tail)
+(highlight-tail-mode)
 
+(setq highlight-tail-colors
+          '(("black" . 0)
+            ("#bc2525" . 25)
+            ("black" . 66)))
 
