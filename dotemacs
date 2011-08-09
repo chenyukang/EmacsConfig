@@ -994,3 +994,7 @@ occurence of CHAR."
 
 (global-set-key (kbd "C-c C-s") 'my-backup-window-configuration)
 (global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
+
+
+(global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
