@@ -4,7 +4,7 @@
 (tool-bar-mode nil)
 (scroll-bar-mode nil)
 (setq frame-title-format "%b@Emacs")
-
+(add-to-list 'load-path "~/.emacs.d/")
 (setq default-major-mode 'text-mode)
 					;(setq auto-image-file-mode t)
 (setq make-backup-files nil)
@@ -152,14 +152,14 @@
 
 ;;======================  常用设置结束 ==============================;
 ;;=================== the font for Chinese ===============;
-(create-fontset-from-fontset-spec
- "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
-chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
- )
-(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
-(set-frame-font "fontset-mymono")
+;; (create-fontset-from-fontset-spec
+;;  "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
+;; chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+;; chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+;; chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
+;;  )
+;(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
+;(set-frame-font "fontset-mymono")
 
 
 ;; Setup GBK environment
@@ -171,13 +171,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (prefer-coding-system 'utf-8)
 
 
-(when (fboundp 'utf-translate-cjk-mode)
-  ;; Load modified utf-translate-cjk-mode
-  (require 'gbk-utf-mode)
-  ;; Turn on utf-translate-cjk-mode
-  (utf-translate-cjk-mode 1)
-  ;; Setup X selection for unicode encoding
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
+;; (when (fboundp 'utf-translate-cjk-mode)
+;;   ;; Load modified utf-translate-cjk-mode
+;;   (require 'gbk-utf-mode)
+;;   ;; Turn on utf-translate-cjk-mode
+;;   (utf-translate-cjk-mode 1)
+;;   ;; Setup X selection for unicode encoding
+;;   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
 
 
 
@@ -194,7 +194,7 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 	(width . 120)
 	(height . 70)
 	(tool-bar-lines . 0)
-	(menu-bar-lines . 0)
+	(menu-bar-lines . 1)
 	(right-fringe)
 	(left-fringe)))
 
@@ -372,13 +372,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (load-file "~/.emacs.d/anything-match-plugin.el")
 (load-file "~/.emacs.d/anything-complete.el")
 (require 'anything-complete)
-;;(anything-read-string-mode 1)
+(anything-read-string-mode 1)
 ;;Bind C-o to complete shell history
 (anything-complete-shell-history-setup-key "\C-o") 
 
-;; (add-to-list 'load-path "~/.emacs.d/company")
-;; (autoload 'company-mode "company" nil t)
-;; (company-mode)
+(add-to-list 'load-path "~/.emacs.d/company")
+(autoload 'company-mode "company" nil t)
+(company-mode)
 
 ;;====================doxymacs====================;
 (add-to-list 'load-path "~/.emacs.d/doxymacs")
@@ -677,7 +677,7 @@ occurence of CHAR."
         ))
 (global-set-key (kbd "C-c q") 'sdcv-search-input)
 					;
-(add-to-list 'load-path "~/.emacs.d/")
+
 (load-file  "~/.emacs.d/xml-rpc.el")
 (load-file  "~/.emacs.d/weblogger.el")
 (require 'weblogger)
@@ -719,7 +719,7 @@ occurence of CHAR."
 ;;==================== w3m ====================
 (autoload 'w3m "w3m" "interface for w3m on emacs" t)
 (setq browse-url-browser-function 'w3m-browse-url)
-(load-file "~/.emacs.d/w3m-config.el")
+;(load-file "~/.emacs.d/w3m-config.el")
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; ;; optional keyboard short-cut
 ;; (global-set-key "\C-xm" 'browse-url-at-point)
@@ -782,9 +782,6 @@ occurence of CHAR."
 (global-set-key [(f7)] 'gud-step)
 (global-set-key [(f8)] 'gud-next)
 
-
-
-;; (load-file "~/.emacs.d/layoutrestore.el")
 ;; (require 'layout-restore)
 ;; (global-set-key [?\C-c ?l] 'layout-save-current)
 ;; (global-set-key [?\C-c ?\C-l ?\C-l] 'layout-restore)
@@ -811,20 +808,6 @@ occurence of CHAR."
 (add-to-list 'load-path "~/.emacs.d/magit")
 (load-file "~/.emacs.d/magit/magit.el")
 (require 'magit)
-
-
-;;==================== micro blog ====================;;
-(add-to-list 'load-path "~/.emacs.d/twittering")
-(require 'twittering-mode)
-(setq twittering-use-master-password t)
-(setq twittering-allow-insecure-server-cert t)
-(setq twittering-oauth-use-ssl nil)
-(setq twittering-use-ssl nil)
-(twittering-enable-unread-status-notifier)
-(setq-default twittering-icon-mode t)
-
-(setq twittering-initial-timeline-spec-string `("http://weibo.com/moorekang"
-						))
 
 
 (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
@@ -985,11 +968,6 @@ occurence of CHAR."
 
 (pulse-toggle-integration-advice (if window-system 1 -1))
 
-(require 'highlight-tail)
-(highlight-tail-mode)
 
-(setq highlight-tail-colors
-          '(("black" . 0)
-            ("#bc2525" . 25)
-            ("black" . 66)))
-
+(require 'window-number)
+(window-number-mode)
