@@ -696,6 +696,8 @@ occurence of CHAR."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cscope-indexing-script "~/apps/bin/cscope-indexer")
+ '(cscope-program "~/apps/bin/cscope")
  '(ecb-directories-menu-user-extension-function (quote ignore))
  '(ecb-eshell-auto-activate nil)
  '(ecb-eshell-enlarge-when-eshell nil)
@@ -776,7 +778,6 @@ occurence of CHAR."
 (if (fboundp 'utf-translate-cjk-mode)
     (utf-translate-cjk-mode 1))
 (require 'flyspell) ;;英文的拼写检查
-(load-file "~/.emacs.d/mew-6.3/kang-config.el")
 
 ;;==================== gdb ==================== ;;
 (setq gdb-many-windows t)
@@ -828,6 +829,7 @@ occurence of CHAR."
 (defun close-this-buffer()
   (interactive)
   (kill-buffer (buffer-name)))
+
 (global-set-key (kbd "C-w") 'close-this-buffer)
 (global-set-key (kbd "C-c C-k") 'kill-region)
 
@@ -973,5 +975,22 @@ occurence of CHAR."
 (pulse-toggle-integration-advice (if window-system 1 -1))
 
 
+(defadvice gdb (before gdb-advice activate)
+  "turn off ECB"
+  (ecb-deactivate))
+
+
 (require 'window-number)
 (window-number-mode)
+
+
+(defun my-backup-window-configuration ()
+  (interactive)
+  (window-configuration-to-register 0))
+
+(defun my-restore-window-configuration ()
+  (interactive)
+  (jump-to-register 0))
+
+(global-set-key (kbd "C-c C-s") 'my-backup-window-configuration)
+(global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
