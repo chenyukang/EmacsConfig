@@ -998,3 +998,18 @@ occurence of CHAR."
 
 (global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
+
+
+;;(setq dired-listing-switches "-l")
+(defun dired-toggle-display-hinden-file ()
+  "Toggle to display hiden files when dired"
+  (interactive)
+  (let ((lsarg dired-listing-switches) (dir (dired-current-directory)))
+    (if (equal lsarg "-lh")
+        (setq lsarg "-alh")
+      (setq lsarg "-lh"))
+    (setq dired-listing-switches lsarg)
+    ;; dired's rule:"If dirname is already in a dired buffer,
+    ;; that buffer is used without refresh." so kill first
+    (kill-buffer (current-buffer))
+    (dired dir)))
