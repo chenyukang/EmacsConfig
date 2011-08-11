@@ -1017,3 +1017,17 @@ occurence of CHAR."
             (font-lock-add-keywords
              nil
              '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+(defun dired-toggle-display-hinden-file ()
+  "Toggle to display hiden files when dired"
+  (interactive)
+  (let ((lsarg dired-listing-switches) (dir (dired-current-directory)))
+    (if (equal lsarg "-lh")
+        (setq lsarg "-alh")
+      (setq lsarg "-lh"))
+    (setq dired-listing-switches lsarg)
+    ;; dired's rule:"If dirname is already in a dired buffer,
+    ;; that buffer is used without refresh." so kill first
+    (kill-buffer (current-buffer))
+    (dired dir)))
+
