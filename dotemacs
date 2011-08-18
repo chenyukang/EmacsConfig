@@ -4,7 +4,7 @@
 (tool-bar-mode nil)
 (scroll-bar-mode nil)
 (setq frame-title-format "%b@Emacs")
-(add-to-list 'load-path "~/.emacs.d/")
+
 (setq default-major-mode 'text-mode)
 					;(setq auto-image-file-mode t)
 (setq make-backup-files nil)
@@ -52,12 +52,12 @@
 ;;thinks
 (require 'thinks)
 (require 'color-theme)
-					;(color-theme-tty-dark)
-(color-theme-deep-blue)
+;;(color-theme-tty-dark)
+;;(color-theme-deep-blue)
 (color-theme-dark-laptop)
 					;(color-theme-pok-wob)
-;;(color-theme-matrix)
-					;(color-theme-calm-forest)
+					;(color-theme-matrix)
+;;(color-theme-calm-forest)
 
 (require 'auto-complete)
 (global-auto-complete-mode t)
@@ -152,14 +152,14 @@
 
 ;;======================  常用设置结束 ==============================;
 ;;=================== the font for Chinese ===============;
-;; (create-fontset-from-fontset-spec
-;;  "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
-;; chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-;; chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-;; chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
-;;  )
-;(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
-;(set-frame-font "fontset-mymono")
+(create-fontset-from-fontset-spec
+ "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
+chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
+ )
+(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
+(set-frame-font "fontset-mymono")
 
 
 ;; Setup GBK environment
@@ -171,13 +171,13 @@
 (prefer-coding-system 'utf-8)
 
 
-;; (when (fboundp 'utf-translate-cjk-mode)
-;;   ;; Load modified utf-translate-cjk-mode
-;;   (require 'gbk-utf-mode)
-;;   ;; Turn on utf-translate-cjk-mode
-;;   (utf-translate-cjk-mode 1)
-;;   ;; Setup X selection for unicode encoding
-;;   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
+(when (fboundp 'utf-translate-cjk-mode)
+  ;; Load modified utf-translate-cjk-mode
+  (require 'gbk-utf-mode)
+  ;; Turn on utf-translate-cjk-mode
+  (utf-translate-cjk-mode 1)
+  ;; Setup X selection for unicode encoding
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
 
 
 
@@ -194,7 +194,7 @@
 	(width . 120)
 	(height . 70)
 	(tool-bar-lines . 0)
-	(menu-bar-lines . 1)
+	(menu-bar-lines . 0)
 	(right-fringe)
 	(left-fringe)))
 
@@ -320,7 +320,7 @@
 (require 'semantic-ia)
 (require 'semantic-gcc)
 (require 'semantic-c)
-(setq semantic-load-turn-everything-on t)
+(setq semantic-load-turn-everything-on 1)
 (autoload 'senator-try-expand-semantic "senator") ;;默认启动senator　
 (semantic-load-enable-minimum-features)
 (global-semanticdb-minor-mode 1)
@@ -372,13 +372,13 @@
 (load-file "~/.emacs.d/anything-match-plugin.el")
 (load-file "~/.emacs.d/anything-complete.el")
 (require 'anything-complete)
-(anything-read-string-mode 1)
+;;(anything-read-string-mode 1)
 ;;Bind C-o to complete shell history
 (anything-complete-shell-history-setup-key "\C-o") 
 
-(add-to-list 'load-path "~/.emacs.d/company")
-(autoload 'company-mode "company" nil t)
-(company-mode)
+;; (add-to-list 'load-path "~/.emacs.d/company")
+;; (autoload 'company-mode "company" nil t)
+;; (company-mode)
 
 ;;====================doxymacs====================;
 (add-to-list 'load-path "~/.emacs.d/doxymacs")
@@ -460,6 +460,7 @@
 (require 'ecb) 
 (require 'ecb-autoloads)
 
+
 ;;;; 各窗口间切换
 (global-set-key [M-left] 'windmove-left)
 (global-set-key [M-right] 'windmove-right)
@@ -512,10 +513,6 @@
 (global-set-key (kbd "C-c r"  ) 'highlight-symbol-query-replace)
 (global-set-key (kbd "C-c M-N") 'highlight-symbol-next-in-defun)
 (global-set-key (kbd "C-c M-P") 'highlight-symbol-prev-in-defun)
-
-
-(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
-(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode))
 
 ;;==================== end programming ===================;
 
@@ -681,7 +678,7 @@ occurence of CHAR."
         ))
 (global-set-key (kbd "C-c q") 'sdcv-search-input)
 					;
-
+(add-to-list 'load-path "~/.emacs.d/")
 (load-file  "~/.emacs.d/xml-rpc.el")
 (load-file  "~/.emacs.d/weblogger.el")
 (require 'weblogger)
@@ -690,14 +687,11 @@ occurence of CHAR."
 	  (lambda ()
 	    (setq fill-column 4000)))
 
-;;please replace to yourself passwd
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cscope-indexing-script "~/apps/bin/cscope-indexer")
- '(cscope-program "~/apps/bin/cscope")
  '(ecb-directories-menu-user-extension-function (quote ignore))
  '(ecb-eshell-auto-activate nil)
  '(ecb-eshell-enlarge-when-eshell nil)
@@ -712,8 +706,7 @@ occurence of CHAR."
  '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (help-echo tree-buffer-help-echo-fn mouse-face highlight))))))
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
- '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") 
- 			  ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "passwd" "1")))))
+ '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "hahakang" "1")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -725,7 +718,7 @@ occurence of CHAR."
 ;;==================== w3m ====================
 (autoload 'w3m "w3m" "interface for w3m on emacs" t)
 (setq browse-url-browser-function 'w3m-browse-url)
-;(load-file "~/.emacs.d/w3m-config.el")
+(load-file "~/.emacs.d/w3m-config.el")
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; ;; optional keyboard short-cut
 ;; (global-set-key "\C-xm" 'browse-url-at-point)
@@ -778,6 +771,7 @@ occurence of CHAR."
 (if (fboundp 'utf-translate-cjk-mode)
     (utf-translate-cjk-mode 1))
 (require 'flyspell) ;;英文的拼写检查
+(load-file "~/.emacs.d/mew-6.3/kang-config.el")
 
 ;;==================== gdb ==================== ;;
 (setq gdb-many-windows t)
@@ -787,6 +781,9 @@ occurence of CHAR."
 (global-set-key [(f7)] 'gud-step)
 (global-set-key [(f8)] 'gud-next)
 
+
+
+;; (load-file "~/.emacs.d/layoutrestore.el")
 ;; (require 'layout-restore)
 ;; (global-set-key [?\C-c ?l] 'layout-save-current)
 ;; (global-set-key [?\C-c ?\C-l ?\C-l] 'layout-restore)
@@ -794,7 +791,23 @@ occurence of CHAR."
 
 (load-file "~/.emacs.d/jump-dls.el")
 (require 'jump)
-(global-set-key [f12] 'jump-symbol-at-point)
+(global-set-key [f12] 'my-jump-symbol)
+
+(defadvice  cscope-find-this-symbol (before save-pos activate)
+  (window-configuration-to-register 1))
+
+(ad-activate 'cscope-find-this-symbol)
+
+(defun my-jump-symbol ()
+  (interactive)
+  (window-configuration-to-register 1)
+  (jump-symbol-at-point))
+
+(defun my-restore-window-configuration ()
+  (interactive)
+  (jump-to-register 0))
+
+
 (global-set-key [(shift f12)] 'go-back-point)
 
 (defun jump-at-point()
@@ -805,14 +818,27 @@ occurence of CHAR."
 
 (defun go-back-point ()
   (interactive)
-  (delete-other-windows)
-  (next-buffer))
+  (jump-to-register 1))
 
 (put 'set-goal-column 'disabled nil)
 
 (add-to-list 'load-path "~/.emacs.d/magit")
 (load-file "~/.emacs.d/magit/magit.el")
 (require 'magit)
+
+
+;;==================== micro blog ====================;;
+(add-to-list 'load-path "~/.emacs.d/twittering")
+(require 'twittering-mode)
+(setq twittering-use-master-password t)
+(setq twittering-allow-insecure-server-cert t)
+(setq twittering-oauth-use-ssl nil)
+(setq twittering-use-ssl nil)
+(twittering-enable-unread-status-notifier)
+(setq-default twittering-icon-mode t)
+
+(setq twittering-initial-timeline-spec-string `("http://weibo.com/moorekang"
+						))
 
 
 (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
@@ -829,13 +855,10 @@ occurence of CHAR."
 (defun close-this-buffer()
   (interactive)
   (kill-buffer (buffer-name)))
-
 (global-set-key (kbd "C-w") 'close-this-buffer)
 (global-set-key (kbd "C-c C-k") 'kill-region)
 
 (load-file "~/.emacs.d/auto/autoconfig.el")
-
-
 
 (defun is-late-now()
   "Check if it is now late, emmm, go to sleep"
@@ -858,20 +881,18 @@ occurence of CHAR."
       (message "late now, go to sleep ... baby!")
     (previous-line)))
 
-;(global-set-key (kbd "C-n") 'my-next-line)
-;(global-set-key (kbd "C-p") 'my-prev-line)
-(global-set-key (kbd "C-n") 'next-line)
-(global-set-key (kbd "C-p") 'previous-line)
+					;(global-set-key (kbd "C-n") 'my-next-line)
+					;(global-set-key (kbd "C-p") 'my-prev-line)
+					;(global-set-key (kbd "C-n") 'next-line)
+					;(global-set-key (kbd "C-p") 'previous-line)
 
 (defadvice previous-line (before check-is-later)
   (if (is-late-now)
       (progn 
 	(message "late now, prepare go to sleep"))))
-	
+
 
 ;; (ad-activate 'previous-line)
-
-
 
 (defun move-line (n)
   "Move the current line up or down by N lines."
@@ -908,76 +929,55 @@ occurence of CHAR."
 
 
 ;; -*- Emacs-Lisp -*-
- 
+
 ;; Time-stamp: <2010-02-25 19:35:15 Thursday by ahei>
- 
+
 (require 'pulse)
- 
+
+
 (defadvice exchange-point-and-mark-nomark (after pulse-advice activate)
   "Cause the line that is `goto'd to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p)
-		 (> (abs (- (point) (mark))) 400))
-	(pulse-momentary-highlight-one-line (point))))
- 
+	     (> (abs (- (point) (mark))) 400))
+    (pulse-momentary-highlight-one-line (point))))
+
 (defadvice switch-to-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
- 
+    (pulse-momentary-highlight-one-line (point))))
+
 (defadvice ido-switch-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
- 
+    (pulse-momentary-highlight-one-line (point))))
+
 (defadvice switch-to-other-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
- 
+    (pulse-momentary-highlight-one-line (point))))
+
 (defadvice visit-.emacs (after pulse-advice activate)
   "Cause the current line of .emacs buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
- 
+    (pulse-momentary-highlight-one-line (point))))
+
 (defadvice beginning-of-buffer (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
-
-
-(defadvice previous-line (after pulse-advice activate)
-  "Cause the current line of buffer to pulse when the cursor gets there."
-  (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
-
-(defadvice next-line (after pulse-advice activate)
-  "Cause the current line of buffer to pulse when the cursor gets there."
-  (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
-
+    (pulse-momentary-highlight-one-line (point))))
 
 (defadvice scroll-up (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
+    (pulse-momentary-highlight-one-line (point))))
 
 
 (defadvice scroll-down (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
-
-(defadvice newline (after pulse-advice activate)
-  "Cause the current line of buffer to pulse when the cursor gets there."
-  (when (and pulse-command-advice-flag (interactive-p))
-	(pulse-momentary-highlight-one-line (point))))
+    (pulse-momentary-highlight-one-line (point))))
 
 (pulse-toggle-integration-advice (if window-system 1 -1))
-
-
-(defadvice gdb (before gdb-advice activate)
-  "turn off ECB"
-  (ecb-deactivate))
 
 
 (require 'window-number)
@@ -996,9 +996,26 @@ occurence of CHAR."
 (global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
 
 
+
+(load-file "~/.emacs.d/anything.el")
+(load-file "~/.emacs.d/anything-match-plugin.el")
+(load-file "~/.emacs.d/anything-complete.el")
+(require 'anything-complete)
+(anything-read-string-mode 1)
+;;Bind C-o to complete shell history
+(anything-complete-shell-history-setup-key "\C-o") 
+
+(add-to-list 'load-path "~/.emacs.d/company")
+(autoload 'company-mode "company" nil t)
+(company-mode)
+
+
 (global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
 
+
+					;====================
+(require 'generic-x)
 
 (defface font-lock-function-call-face
   '((t (:foreground "orange")))
@@ -1012,11 +1029,14 @@ occurence of CHAR."
              nil
              '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
 
+
 (add-hook 'c++-mode-hook
           (lambda ()
             (font-lock-add-keywords
              nil
              '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+
 
 (defun dired-toggle-display-hinden-file ()
   "Toggle to display hiden files when dired"
@@ -1031,3 +1051,7 @@ occurence of CHAR."
     (kill-buffer (current-buffer))
     (dired dir)))
 
+(require 'project-mode)
+(project-load-all)
+(project-display-menu)
+(global-set-key (kbd "C-c i") 'project-regex-search)
