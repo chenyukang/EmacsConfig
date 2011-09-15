@@ -3,8 +3,8 @@
 (setq inhibit-startup-message t)
 (tool-bar-mode nil)
 (scroll-bar-mode nil)
-(setq frame-title-format "%b@Emacs")
-
+(setq frame-title-format "%b@Kang")
+(add-to-list 'load-path "~/.emacs.d/")
 (setq default-major-mode 'text-mode)
 					;(setq auto-image-file-mode t)
 (setq make-backup-files nil)
@@ -53,16 +53,18 @@
 (require 'thinks)
 (require 'color-theme)
 ;;(color-theme-tty-dark)
-;;(color-theme-deep-blue)
+(color-theme-deep-blue)
 (color-theme-dark-laptop)
-					;(color-theme-pok-wob)
-					;(color-theme-matrix)
+;;(color-theme-pok-wob)
+;;(color-theme-matrix)
 ;;(color-theme-calm-forest)
 
+(add-to-list 'load-path "~/.emacs.d/auto-complete")
 (require 'auto-complete)
 (global-auto-complete-mode t)
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
+(setq ac-auto-start 3)        
 
 ;;==================== yasnippet ==================== ;
 (add-to-list 'load-path "~/.emacs.d/yasnippet")
@@ -84,7 +86,6 @@
     (candidate-face . ac-yasnippet-candidate-face)
     (selection-face . ac-yasnippet-selection-face))
   "Source for Yasnippet.")
-
 
 ;;==================== end yasnippet ====================;
 (global-set-key [(kbd "TAB")] 'hippie-expand)
@@ -113,33 +114,33 @@
 
 (global-hi-lock-mode 1) 
 
-(set-frame-parameter (selected-frame) 'alpha (list 85 50))
-(add-to-list 'default-frame-alist (cons 'alpha (list 85 50)))
+;; (set-frame-parameter (selected-frame) 'alpha (list 85 50))
+;; (add-to-list 'default-frame-alist (cons 'alpha (list 85 50)))
 
-(defun transform-window (a ab)
-  (set-frame-parameter (selected-frame) 'alpha (list a ab))
-  (add-to-list 'default-frame-alist (cons 'alpha (list a ab))))
+;; (defun transform-window (a ab)
+;;   (set-frame-parameter (selected-frame) 'alpha (list a ab))
+;;   (add-to-list 'default-frame-alist (cons 'alpha (list a ab))))
 
-(global-set-key [(f7)] (lambda()
-                         (interactive)
-                         (transform-window 65 35)))
+;; (global-set-key [(f7)] (lambda()
+;;                          (interactive)
+;;                          (transform-window 65 35)))
 
-(global-set-key [(f6)] 'loop-alpha)
-(setq alpha-list '((100 100) (95 65) (85 55) (75 45) (65 35)))
-(defun loop-alpha ()
-  (interactive)
-  (let ((h (car alpha-list))) ;; head value will set to
-    ((lambda (a ab)
-       (set-frame-parameter (selected-frame) 'alpha (list a ab))
-       (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
-       ) (car h) (car (cdr h)))
-    (setq alpha-list (cdr (append alpha-list (list h))))
-    ))
+;; (global-set-key [(f6)] 'loop-alpha)
+;; (setq alpha-list '((100 100) (95 65) (85 55) (75 45) (65 35)))
+;; (defun loop-alpha ()
+;;   (interactive)
+;;   (let ((h (car alpha-list))) ;; head value will set to
+;;     ((lambda (a ab)
+;;        (set-frame-parameter (selected-frame) 'alpha (list a ab))
+;;        (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
+;;        ) (car h) (car (cdr h)))
+;;     (setq alpha-list (cdr (append alpha-list (list h))))
+;;     ))
 
-(global-set-key[(f1)]
-	       (lambda()
-		 (interactive)
-		 (manual-entry(current-word))))
+;; (global-set-key[(f1)]
+;; 	       (lambda()
+;; 		 (interactive)
+;; 		 (manual-entry(current-word))))
 
 (setq default-fill-column 150)
 (defun fill-buffer ()
@@ -152,14 +153,14 @@
 
 ;;======================  常用设置结束 ==============================;
 ;;=================== the font for Chinese ===============;
-(create-fontset-from-fontset-spec
- "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
-chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
-chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
- )
-(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
-(set-frame-font "fontset-mymono")
+;; (create-fontset-from-fontset-spec
+;;  "-*-courier-medium-R-normal--17-*-*-*-*-*-fontset-mymono,
+;; chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+;; chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+;; chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
+;;  )
+;(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
+;(set-frame-font "fontset-mymono")
 
 
 ;; Setup GBK environment
@@ -171,13 +172,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (prefer-coding-system 'utf-8)
 
 
-(when (fboundp 'utf-translate-cjk-mode)
-  ;; Load modified utf-translate-cjk-mode
-  (require 'gbk-utf-mode)
-  ;; Turn on utf-translate-cjk-mode
-  (utf-translate-cjk-mode 1)
-  ;; Setup X selection for unicode encoding
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
+;; (when (fboundp 'utf-translate-cjk-mode)
+;;   ;; Load modified utf-translate-cjk-mode
+;;   (require 'gbk-utf-mode)
+;;   ;; Turn on utf-translate-cjk-mode
+;;   (utf-translate-cjk-mode 1)
+;;   ;; Setup X selection for unicode encoding
+;;   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))) 
 
 
 
@@ -191,21 +192,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
       '((vertical-scroll-bars)
 	(top . 20)
 	(left . 45)
-	(width . 120)
-	(height . 70)
+	(height . 200)
+	(width . 200)
 	(tool-bar-lines . 0)
-	(menu-bar-lines . 0)
+	(menu-bar-lines . 1)
 	(right-fringe)
 	(left-fringe)))
 
-
-;; ;; 设置另外一些颜色：语法高亮显示的背景和主题，区域选择的背景和主题，二次选择的背景和选择
-;; (set-face-foreground 'highlight "white")
-;; (set-face-background 'highlight "blue")
-;; (set-face-foreground 'region "cyan")
-;; (set-face-background 'region "blue")
-;; (set-face-foreground 'secondary-selection "skyblue")
-;; (set-face-background 'secondary-selection "darkblue")
 
 ;;下面的这个设置可以让光标指到某个括号的时候显示与它匹配的括号
 (show-paren-mode t)
@@ -271,10 +264,11 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
   (setq c-basic-offset 4) 
   (linum-mode)
   (doxymacs-mode)
+  (semantic-highlight-func-mode)
   (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
   (define-key c-mode-base-map [(return)] 'newline-and-indent)
   (define-key c-mode-base-map [(f7)] 'compile)
-  (define-key c-mode-base-map [(f8)] 'ff-get-other-file)
+  ;;(define-key c-mode-base-map [(f8)] 'ff-get-other-file)
   (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
   ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
   (define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
@@ -307,7 +301,7 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
 (setq abbrev-mode t)
-(global-set-key (kbd "C-=") 'dabbrev-expand)
+(global-set-key (kbd "C-c j") 'dabbrev-expand)
 ;;(global-set-key [(f5)] 'speedbar)
 (global-set-key (kbd "C-c h") 'hs-hide-block)
 (global-set-key (kbd "C-c u") 'hs-show-block)
@@ -320,13 +314,19 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (require 'semantic-ia)
 (require 'semantic-gcc)
 (require 'semantic-c)
-(setq semantic-load-turn-everything-on 1)
+(autoload 'senator-try-expand-semantic "senator") ;;默认启动senator　
+(global-semanticdb-minor-mode 1)
+(semantic-load-enable-minimum-features)
+(semantic-load-enable-code-helpers)
+
+;;(semantic-idle-completions-mode)
+;(semantic-load-enable-guady-code-helpers)
+;(semantic-load-enable-excessive-code-helpers)
+;(semantic-load-enable-semantic-debugging-helpers)
+(setq semantic-load-turn-everything-on t)
 (setq semantic-load-turn-useful-things-on t)
 (which-function-mode)
-(autoload 'senator-try-expand-semantic "senator") ;;默认启动senator　
-(semantic-load-enable-minimum-features)
-(global-semanticdb-minor-mode 1)
-(semantic-load-enable-code-helpers)
+
 (global-set-key (kbd "C-c l") 'semantic-ia-complete-symbol-menu)
 					;(define-key global-map [f12] 'semantic-ia-fast-jump)
 (define-key global-map [f11] 'eassist-switch-h-cpp)
@@ -340,11 +340,17 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 ;; 配置Semantic的检索范围:
 (setq semanticdb-project-roots
       (list
+       (expand-file-name "/home/yukang")
        (expand-file-name "/")))
+
+(defconst cedet-user-include-dirs
+  (list ".." "../core" "../inc" "../common" "../public"
+        "../.." "../../include" "../../inc" "../../common" "../../public"))
 
 ;; 设置semantic cache临时文件的路径，避免到处都是临时文件
 (setq semanticdb-default-save-directory
-      (expand-file-name "~/.emacs.d/semanticdb")) 
+      (expand-file-name "~/.emacs.d/semanticdb"))
+ 
 ;; C/C++语言启动时自动加载semantic对/usr/include的索引数据库
 (setq semanticdb-search-system-databases t)
 (add-hook 'c-mode-common-hook
@@ -352,7 +358,20 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
             (setq semanticdb-project-system-databases
                   (list (semanticdb-create-database
 			 semanticdb-new-database-class
-			 "/usr/include")))))
+			 "/usr/include")
+			(semanticdb-create-database
+			 semanticdb-new-database-class
+			 "/home/yukang")))))
+
+(add-hook 'c++-mode-common-hook
+          (lambda ()
+            (setq semanticdb-project-system-databases
+                  (list (semanticdb-create-database
+			 semanticdb-new-database-class
+			 "/usr/include")
+			(semanticdb-create-database
+			 semanticdb-new-database-class
+			 "/home/yukang")))))
 
 (defun my-cedet-hook ()
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
@@ -374,13 +393,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (load-file "~/.emacs.d/anything-match-plugin.el")
 (load-file "~/.emacs.d/anything-complete.el")
 (require 'anything-complete)
-;;(anything-read-string-mode 1)
+(anything-read-string-mode 1)
 ;;Bind C-o to complete shell history
 (anything-complete-shell-history-setup-key "\C-o") 
 
-;; (add-to-list 'load-path "~/.emacs.d/company")
-;; (autoload 'company-mode "company" nil t)
-;; (company-mode)
+(add-to-list 'load-path "~/.emacs.d/company")
+(autoload 'company-mode "company" nil t)
+(company-mode)
 
 ;;====================doxymacs====================;
 (add-to-list 'load-path "~/.emacs.d/doxymacs")
@@ -426,15 +445,15 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
   (delete-other-windows)
   (split-window-vertically)
   (other-window 1)
-  (eshell))
+  (eshell)
+  (goto-char (point-max)))
 (global-set-key (kbd "C-c e") 'open-eshell-now)
 
 
 (defun go-to-other-window-and-close-this-one()
   "Go to other window and close current window"
   (interactive)
-  (kill-buffer)
-  (next-buffer)
+  (other-window 1)
   (delete-other-windows))
 (global-set-key (kbd "C-c k") 'go-to-other-window-and-close-this-one)
 
@@ -461,7 +480,6 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (add-to-list 'load-path "~/.emacs.d/ecb")
 (require 'ecb) 
 (require 'ecb-autoloads)
-
 
 ;;;; 各窗口间切换
 (global-set-key [M-left] 'windmove-left)
@@ -516,6 +534,10 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (global-set-key (kbd "C-c M-N") 'highlight-symbol-next-in-defun)
 (global-set-key (kbd "C-c M-P") 'highlight-symbol-prev-in-defun)
 
+
+(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
+(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode))
+
 ;;==================== end programming ===================;
 
 ;;==================== other extension ===================;
@@ -526,10 +548,22 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 
 (require 'tabbar)
 (tabbar-mode)
-(global-set-key (kbd "C-c <right>") 'tabbar-forward-group)
-(global-set-key (kbd "C-c <left>")  'tabbar-backward-group)
+(global-set-key (kbd "C-c =") 'tabbar-forward-group)
+(global-set-key (kbd "C-c -")  'tabbar-backward-group)
 (global-set-key (kbd "C-,") 'tabbar-backward)
 (global-set-key (kbd "C-.") 'tabbar-forward)
+
+
+;; (require 'swbuff)
+;; (global-set-key (kbd "") 'swbuff-switch-to-previous-buffer)
+;; (global-set-key (kbd "") 'swbuff-switch-to-next-buffer)
+;; (setq swbuff-exclude-buffer-regexps 
+;;       '("^ " "\\*.*\\*"))
+
+;; (setq swbuff-status-window-layout 'scroll)
+;; (setq swbuff-clear-delay 1)
+;; (setq swbuff-separator "||")
+;; (setq swbuff-window-min-text-height 1)
 
 
 (require 'xcscope)
@@ -633,9 +667,9 @@ occurence of CHAR."
                    (setq string (concat string
                                         (and string ", ") buffname))))
             (buffer-list))
-    (if string (message "清理buffer: %s" string)
+    (if string (message "clean buffer: %s" string)
 					;(if string (message "Deleted: %s" string)
-      (message "没有多余的buffer"))))
+      (message "clean NO buffers"))))
 
 ;;==================== 查单词 ====================;
 ;;查英语单词
@@ -668,7 +702,7 @@ occurence of CHAR."
         ))
 (global-set-key (kbd "C-c q") 'sdcv-search-input)
 					;
-(add-to-list 'load-path "~/.emacs.d/")
+
 (load-file  "~/.emacs.d/xml-rpc.el")
 (load-file  "~/.emacs.d/weblogger.el")
 (require 'weblogger)
@@ -677,83 +711,52 @@ occurence of CHAR."
 	  (lambda ()
 	    (setq fill-column 4000)))
 
+;;please replace to yourself passwd
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(cscope-indexing-script "~/apps/bin/cscope-indexer")
+ '(cscope-program "~/apps/bin/cscope")
  '(ecb-directories-menu-user-extension-function (quote ignore))
  '(ecb-eshell-auto-activate nil)
  '(ecb-eshell-enlarge-when-eshell nil)
  '(ecb-eshell-fit-window-to-command-output nil)
  '(ecb-eshell-synchronize nil)
  '(ecb-history-menu-user-extension-function (quote ignore))
- '(ecb-layout-name "right1")
- '(ecb-layout-window-sizes nil)
+ '(ecb-layout-name "kanglayout")
+ '(ecb-layout-window-sizes (quote (("kanglayout" (ecb-directories-buffer-name 0.15343915343915343 . 0.49230769230769234) (ecb-sources-buffer-name 0.15343915343915343 . 0.49230769230769234) (ecb-methods-buffer-name 0.164021164021164 . 0.9846153846153847)))))
+ '(ecb-methods-general-face (quote ecb-default-general-face))
  '(ecb-methods-menu-user-extension-function (quote ignore))
  '(ecb-options-version "2.40")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
  '(ecb-source-path (quote (("/home/kang/" #("/" 0 1 (help-echo tree-buffer-help-echo-fn mouse-face highlight))))))
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
- '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "hahakang" "1")))))
+ '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "passwd" "1")))))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  )
+
+
+(ecb-activate)
+(ecb-toggle-ecb-windows)
+(global-set-key (kbd "C-c '") 'ecb-toggle-ecb-windows)
 
 
 ;;==================== w3m ====================
 (autoload 'w3m "w3m" "interface for w3m on emacs" t)
 (setq browse-url-browser-function 'w3m-browse-url)
-(load-file "~/.emacs.d/w3m-config.el")
+;(load-file "~/.emacs.d/w3m-config.el")
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-;; ;; optional keyboard short-cut
-;; (global-set-key "\C-xm" 'browse-url-at-point)
-;; (setq w3m-command-arguments '("-cookie" "-T"))
-;; (setq w3m-use-cookies t)
-;; (setq w3m-home-page "http://www.google.com.cn")
-;; (setq w3m-default-display-inline-image t)
-;; (setq w3m-default-toggle-inline-images t)
-;; (setq w3m-use-form t)
-;; (setq w3m-tab-width 8)
-;; (setq w3m-use-cookies t)
-;; (setq w3m-use-toolbar t)
-;; (setq w3m-use-mule-ucs t)
-;; (setq w3m-fill-column 120)
-;; (setq w3m-default-display-inline-image t)
-;; (setq w3m-default-toggle-inline-images t)
-;; (setq w3m-display-inline-image t)
-
-
 
 ;;==================== muse ==================== 
 (load-file "~/.emacs.d/muse_kang.el")
 
-;;==================== mail ====================
-(add-to-list 'load-path
-             "~/.emacs.d/mew-6.3")
-(autoload 'mew "mew" nil t)
-(autoload 'mew-send "mew" nil t)
-(setq mew-use-cached-passwd t)
-(if (boundp 'read-mail-command)
-    (setq read-mail-command 'mew))
-(autoload 'mew-user-agent-compose "mew" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'mew-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'mew-user-agent
-      'mew-user-agent-compose
-      'mew-draft-send-message
-      'mew-draft-kill
-      'mew-send-hook))
-(setq mew-pop-size 0)
-(setq mew-smtp-auth-list nil)
-(setq toolbar-mail-reader 'Mew)
-(set-default 'mew-decode-quoted 't) 
 (when (boundp 'utf-translate-cjk)
   (setq utf-translate-cjk t)
   (custom-set-variables
@@ -761,19 +764,15 @@ occurence of CHAR."
 (if (fboundp 'utf-translate-cjk-mode)
     (utf-translate-cjk-mode 1))
 (require 'flyspell) ;;英文的拼写检查
-(load-file "~/.emacs.d/mew-6.3/kang-config.el")
 
 ;;==================== gdb ==================== ;;
-(setq gdb-many-windows t)
 ;;...
 (load-library "multi-gud.el")
 (load-library "multi-gdb-ui.el")
+(setq gdb-many-windows t)
 (global-set-key [(f7)] 'gud-step)
 (global-set-key [(f8)] 'gud-next)
 
-
-
-;; (load-file "~/.emacs.d/layoutrestore.el")
 ;; (require 'layout-restore)
 ;; (global-set-key [?\C-c ?l] 'layout-save-current)
 ;; (global-set-key [?\C-c ?\C-l ?\C-l] 'layout-restore)
@@ -781,31 +780,23 @@ occurence of CHAR."
 
 (load-file "~/.emacs.d/jump-dls.el")
 (require 'jump)
-(global-set-key [f12] 'my-jump-symbol)
-
-(defadvice  cscope-find-this-symbol (before save-pos activate)
-  (window-configuration-to-register 1))
-
-(ad-activate 'cscope-find-this-symbol)
 
 (defun my-jump-symbol ()
   (interactive)
   (window-configuration-to-register 1)
   (jump-symbol-at-point))
 
-(defun my-restore-window-configuration ()
-  (interactive)
-  (jump-to-register 0))
+(global-set-key [f12] 'my-jump-symbol)
+;(global-set-key [f12] 'semantic-ia-fast-jump)
+(defadvice semantic-ia-fast-jump (before save-pos activate)
+  (window-configuration-to-register 1))
 
+(defadvice  cscope-find-this-symbol (before save-pos activate)
+  (window-configuration-to-register 1))
+
+(ad-activate 'cscope-find-this-symbol)
 
 (global-set-key [(shift f12)] 'go-back-point)
-
-(defun jump-at-point()
-  (interactive)
-  (setq position (point))
-  (jump-symbol-at-point)
-  (goto-char position))
-
 (defun go-back-point ()
   (interactive)
   (jump-to-register 1))
@@ -817,20 +808,6 @@ occurence of CHAR."
 (require 'magit)
 
 
-;;==================== micro blog ====================;;
-(add-to-list 'load-path "~/.emacs.d/twittering")
-(require 'twittering-mode)
-(setq twittering-use-master-password t)
-(setq twittering-allow-insecure-server-cert t)
-(setq twittering-oauth-use-ssl nil)
-(setq twittering-use-ssl nil)
-(twittering-enable-unread-status-notifier)
-(setq-default twittering-icon-mode t)
-
-(setq twittering-initial-timeline-spec-string `("http://weibo.com/moorekang"
-						))
-
-
 (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
 
 
@@ -840,15 +817,18 @@ occurence of CHAR."
   (revert-buffer t t)
   (other-window 1))
 
-(global-set-key [f5] 'flush-up-window)
+;;(global-set-key [f5] 'flush-up-window)
 
 (defun close-this-buffer()
   (interactive)
   (kill-buffer (buffer-name)))
+
 (global-set-key (kbd "C-w") 'close-this-buffer)
 (global-set-key (kbd "C-c C-k") 'kill-region)
 
 (load-file "~/.emacs.d/auto/autoconfig.el")
+
+
 
 (defun is-late-now()
   "Check if it is now late, emmm, go to sleep"
@@ -871,18 +851,20 @@ occurence of CHAR."
       (message "late now, go to sleep ... baby!")
     (previous-line)))
 
-					;(global-set-key (kbd "C-n") 'my-next-line)
-					;(global-set-key (kbd "C-p") 'my-prev-line)
-					;(global-set-key (kbd "C-n") 'next-line)
-					;(global-set-key (kbd "C-p") 'previous-line)
+;(global-set-key (kbd "C-n") 'my-next-line)
+;(global-set-key (kbd "C-p") 'my-prev-line)
+(global-set-key (kbd "C-n") 'next-line)
+(global-set-key (kbd "C-p") 'previous-line)
 
 (defadvice previous-line (before check-is-later)
   (if (is-late-now)
       (progn 
 	(message "late now, prepare go to sleep"))))
-
+	
 
 ;; (ad-activate 'previous-line)
+
+
 
 (defun move-line (n)
   "Move the current line up or down by N lines."
@@ -919,56 +901,75 @@ occurence of CHAR."
 
 
 ;; -*- Emacs-Lisp -*-
-
+ 
 ;; Time-stamp: <2010-02-25 19:35:15 Thursday by ahei>
-
+ 
 (require 'pulse)
-
-
+ 
 (defadvice exchange-point-and-mark-nomark (after pulse-advice activate)
   "Cause the line that is `goto'd to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p)
-	     (> (abs (- (point) (mark))) 400))
-    (pulse-momentary-highlight-one-line (point))))
-
+		 (> (abs (- (point) (mark))) 400))
+	(pulse-momentary-highlight-one-line (point))))
+ 
 (defadvice switch-to-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
-
+	(pulse-momentary-highlight-one-line (point))))
+ 
 (defadvice ido-switch-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
-
+	(pulse-momentary-highlight-one-line (point))))
+ 
 (defadvice switch-to-other-buffer (after pulse-advice activate)
   "Cause the current line of new buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
-
+	(pulse-momentary-highlight-one-line (point))))
+ 
 (defadvice visit-.emacs (after pulse-advice activate)
   "Cause the current line of .emacs buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
-
+	(pulse-momentary-highlight-one-line (point))))
+ 
 (defadvice beginning-of-buffer (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
+	(pulse-momentary-highlight-one-line (point))))
+
+
+;; (defadvice previous-line (after pulse-advice activate)
+;;   "Cause the current line of buffer to pulse when the cursor gets there."
+;;   (when (and pulse-command-advice-flag (interactive-p))
+;; 	(pulse-momentary-highlight-one-line (point))))
+
+;; (defadvice next-line (after pulse-advice activate)
+;;   "Cause the current line of buffer to pulse when the cursor gets there."
+;;   (when (and pulse-command-advice-flag (interactive-p))
+;; 	(pulse-momentary-highlight-one-line (point))))
 
 (defadvice scroll-up (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
+	(pulse-momentary-highlight-one-line (point))))
 
 
 (defadvice scroll-down (after pulse-advice activate)
   "Cause the current line of buffer to pulse when the cursor gets there."
   (when (and pulse-command-advice-flag (interactive-p))
-    (pulse-momentary-highlight-one-line (point))))
+	(pulse-momentary-highlight-one-line (point))))
+
+(defadvice newline (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+	(pulse-momentary-highlight-one-line (point))))
 
 (pulse-toggle-integration-advice (if window-system 1 -1))
 
+
+(defadvice gdb (before gdb-advice activate)
+  "turn off ECB"
+  (ecb-deactivate))
 
 (require 'window-number)
 (window-number-mode)
@@ -985,50 +986,12 @@ occurence of CHAR."
 (global-set-key (kbd "C-c C-s") 'my-backup-window-configuration)
 (global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
 
-
-
-(load-file "~/.emacs.d/anything.el")
-(load-file "~/.emacs.d/anything-match-plugin.el")
-(load-file "~/.emacs.d/anything-complete.el")
-(require 'anything-complete)
-(anything-read-string-mode 1)
-;;Bind C-o to complete shell history
-(anything-complete-shell-history-setup-key "\C-o") 
-
-(add-to-list 'load-path "~/.emacs.d/company")
-(autoload 'company-mode "company" nil t)
-(company-mode)
-
-
-(global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
 (global-set-key (kbd "C-x m")   'anything-execute-extended-command)
+(global-set-key (kbd "C-c m")   'anything-execute-extended-command)
+(global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
 
-
-					;====================
-(require 'generic-x)
-
-(defface font-lock-function-call-face
-  '((t (:foreground "orange")))
-  "Font Lock mode face used to highlight function calls."
-  :group 'font-lock-highlighting-faces)
-
-(defvar font-lock-function-call-face 'font-lock-function-call-face)
-(add-hook 'c-mode-hook
-          (lambda ()
-            (font-lock-add-keywords
-             nil
-             '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
-
-
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (font-lock-add-keywords
-             nil
-             '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
-
-
-
+;;(setq dired-listing-switches "-l")
 (defun dired-toggle-display-hinden-file ()
   "Toggle to display hiden files when dired"
   (interactive)
@@ -1042,10 +1005,39 @@ occurence of CHAR."
     (kill-buffer (current-buffer))
     (dired dir)))
 
+
+
+(defface font-lock-function-call-face
+  '((t (:foreground "orange")))
+  "Font Lock mode face used to highlight function calls."
+  :group 'font-lock-highlighting-faces)
+
+(defvar font-lock-function-call-face 'font-lock-function-call-face)
+(add-hook 'c-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+(setq shell-file-name "/bin/bash")
+; by prepending new paths to existing paths
+(setenv "PATH"
+  (concat
+   "/home/yukang/app/bin" ":"
+   (getenv "PATH") ; inherited from OS
+  )
+)
+
+
 (require 'project-mode)
 (project-load-all)
 (global-set-key (kbd "C-c i") 'project-regex-search)
-
 
 (require 'etags-select)
 
@@ -1084,11 +1076,6 @@ otherwise raises an error."
 (add-hook 'emacs-startup-hook 
 	'(lambda () (jds-set-tags-file-path)))
 
-(require 'multi-term)
-(setq multi-term-program "/bin/bash")
-
-
-
 (require 'bookmark+)
 
 
@@ -1123,7 +1110,54 @@ otherwise raises an error."
          (error (condition-case nil (windmove-down) 
 		  (error (condition-case nil (windmove-up) (error (windmove-left))))))))))
 
-(global-set-key (kbd "C-x <up>") 'windmove-up-cycle)
-(global-set-key (kbd "C-x <down>") 'windmove-down-cycle)
-(global-set-key (kbd "C-x <right>") 'windmove-right-cycle)
-(global-set-key (kbd "C-x <left>") 'windmove-left-cycle)
+(global-set-key (kbd "C-c <up>") 'windmove-up-cycle)
+(global-set-key (kbd "C-c <down>") 'windmove-down-cycle)
+(global-set-key (kbd "C-c <right>") 'windmove-right-cycle)
+(global-set-key (kbd "C-c <left>") 'windmove-left-cycle)
+
+(defun other-window-kill-buffer ()
+  "Kill the buffer in the other window"
+  (interactive)
+  ;; Window selection is used because point goes to a different window
+  ;; if more than 2 windows are present
+  (let ((win-curr (selected-window))
+        (win-other (next-window)))
+    (select-window win-other)
+    (kill-this-buffer)
+    (select-window win-curr)))
+
+
+;;==================== Icicles ====================;;
+(add-to-list 'load-path "~/.emacs.d/Icicles")
+
+(setq visible-bell t)
+
+
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(setq auto-fill-mode t)
+(setq fill-column 90)
+(setq-default fill-column 90)    
+
+
+
+(defun my-ecb-active-or-deactive ()  
+    (interactive)  
+    (if ecb-minor-mode  
+      (ecb-deactivate)  
+      (ecb-activate)))  
+  
+(global-set-key (kbd "<C-f1>") 'my-ecb-active-or-deactive)
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+;; Xrefactory configuration part ;;
+(defvar xref-current-project nil) ;; can be also "my_project_name"
+(defvar xref-key-binding 'global) ;; can be also 'local or 'none
+(setq load-path (cons "/home/yukang/.emacs.d/xref/emacs" load-path))
+(setq exec-path (cons "/home/yukang/.emacs.d/xref" exec-path))
+(load "xrefactory")
+;; end of Xrefactory configuration part ;;
+
+(message "xrefactory loaded")
+
+(define-key global-map [f11] 'eassist-switch-h-cpp)
