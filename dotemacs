@@ -45,7 +45,6 @@
 
 
 
-(require 'highlight-current-line)
 (require 'browse-kill-ring)
 (require 'filladapt)
 
@@ -59,7 +58,11 @@
 					;(color-theme-matrix)
 ;;(color-theme-calm-forest)
 
+(add-to-list 'load-path "~/.emacs.d/auto-complete")
 (require 'auto-complete)
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/dict")
+(ac-config-default)
 (global-auto-complete-mode t)
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
@@ -200,12 +203,13 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 
 
 ;; ;; 设置另外一些颜色：语法高亮显示的背景和主题，区域选择的背景和主题，二次选择的背景和选择
-;; (set-face-foreground 'highlight "white")
-;; (set-face-background 'highlight "blue")
-;; (set-face-foreground 'region "cyan")
-;; (set-face-background 'region "blue")
-;; (set-face-foreground 'secondary-selection "skyblue")
-;; (set-face-background 'secondary-selection "darkblue")
+(set-face-foreground 'highlight "white")
+(set-face-background 'highlight "blue")
+(set-face-foreground 'region "cyan")
+(set-face-background 'region "blue")
+(set-face-foreground 'secondary-selection "skyblue")
+(set-face-background 'secondary-selection "darkblue")
+(setq highlight-symbol-idle-delay 1)
 
 ;;下面的这个设置可以让光标指到某个括号的时候显示与它匹配的括号
 (show-paren-mode t)
@@ -216,9 +220,6 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (require 'linum)                                                   
 
 ;;========================= end window =================================
-
-
-
 
 ;;========================= programming ===============================
 ;;;;我的C/C++语言编辑策略
@@ -274,7 +275,7 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
   (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
   (define-key c-mode-base-map [(return)] 'newline-and-indent)
   (define-key c-mode-base-map [(f7)] 'compile)
-  (define-key c-mode-base-map [(f8)] 'ff-get-other-file)
+  ;;(define-key c-mode-base-map [(f8)] 'ff-get-other-file)
   (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
   ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
   (define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
@@ -459,6 +460,9 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 (add-to-list 'load-path "~/.emacs.d/ecb")
 (require 'ecb) 
 (require 'ecb-autoloads)
+(ecb-toggle-ecb-windows)
+(global-set-key (kbd "C-c '") 'ecb-toggle-ecb-windows)
+
 
 
 ;;;; 各窗口间切换
@@ -494,7 +498,6 @@ chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-
 ;;==================== end python ====================;;
 
 ;; -*- Emacs-Lisp -*-
-;; Time-stamp: <2009-11-27 15:12:23 Friday by ahei>
 (require 'highlight-symbol)
 (require 'sgml-mode)
 (setq highlight-symbol-idle-delay 0.5)
@@ -688,10 +691,10 @@ occurence of CHAR."
 	    (setq fill-column 4000)))
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(ecb-directories-menu-user-extension-function (quote ignore))
  '(ecb-eshell-auto-activate nil)
  '(ecb-eshell-enlarge-when-eshell nil)
@@ -699,7 +702,7 @@ occurence of CHAR."
  '(ecb-eshell-synchronize nil)
  '(ecb-history-menu-user-extension-function (quote ignore))
  '(ecb-layout-name "right1")
- '(ecb-layout-window-sizes nil)
+ '(ecb-layout-window-sizes (quote (("right1" (ecb-directories-buffer-name 0.22388059701492538 . 0.2857142857142857) (ecb-sources-buffer-name 0.22388059701492538 . 0.3469387755102041) (ecb-methods-buffer-name 0.22388059701492538 . 0.3469387755102041)))))
  '(ecb-methods-menu-user-extension-function (quote ignore))
  '(ecb-options-version "2.40")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
@@ -708,74 +711,18 @@ occurence of CHAR."
  '(ecb-tip-of-the-day nil)
  '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "hahakang" "1")))))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  )
-
-
-;;==================== w3m ====================
-(autoload 'w3m "w3m" "interface for w3m on emacs" t)
-(setq browse-url-browser-function 'w3m-browse-url)
-(load-file "~/.emacs.d/w3m-config.el")
-(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-;; ;; optional keyboard short-cut
-;; (global-set-key "\C-xm" 'browse-url-at-point)
-;; (setq w3m-command-arguments '("-cookie" "-T"))
-;; (setq w3m-use-cookies t)
-;; (setq w3m-home-page "http://www.google.com.cn")
-;; (setq w3m-default-display-inline-image t)
-;; (setq w3m-default-toggle-inline-images t)
-;; (setq w3m-use-form t)
-;; (setq w3m-tab-width 8)
-;; (setq w3m-use-cookies t)
-;; (setq w3m-use-toolbar t)
-;; (setq w3m-use-mule-ucs t)
-;; (setq w3m-fill-column 120)
-;; (setq w3m-default-display-inline-image t)
-;; (setq w3m-default-toggle-inline-images t)
-;; (setq w3m-display-inline-image t)
-
-
 
 ;;==================== muse ==================== 
 (load-file "~/.emacs.d/muse_kang.el")
 
-;;==================== mail ====================
-(add-to-list 'load-path
-             "~/.emacs.d/mew-6.3")
-(autoload 'mew "mew" nil t)
-(autoload 'mew-send "mew" nil t)
-(setq mew-use-cached-passwd t)
-(if (boundp 'read-mail-command)
-    (setq read-mail-command 'mew))
-(autoload 'mew-user-agent-compose "mew" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'mew-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'mew-user-agent
-      'mew-user-agent-compose
-      'mew-draft-send-message
-      'mew-draft-kill
-      'mew-send-hook))
-(setq mew-pop-size 0)
-(setq mew-smtp-auth-list nil)
-(setq toolbar-mail-reader 'Mew)
-(set-default 'mew-decode-quoted 't) 
-(when (boundp 'utf-translate-cjk)
-  (setq utf-translate-cjk t)
-  (custom-set-variables
-   '(utf-translate-cjk t)))
-(if (fboundp 'utf-translate-cjk-mode)
-    (utf-translate-cjk-mode 1))
-(require 'flyspell) ;;英文的拼写检查
-(load-file "~/.emacs.d/mew-6.3/kang-config.el")
 
 ;;==================== gdb ==================== ;;
 (setq gdb-many-windows t)
-;;...
 (load-library "multi-gud.el")
 (load-library "multi-gdb-ui.el")
 (global-set-key [(f7)] 'gud-step)
@@ -880,11 +827,10 @@ occurence of CHAR."
   (if (is-late-now)
       (message "late now, go to sleep ... baby!")
     (previous-line)))
-
-					;(global-set-key (kbd "C-n") 'my-next-line)
-					;(global-set-key (kbd "C-p") 'my-prev-line)
-					;(global-set-key (kbd "C-n") 'next-line)
-					;(global-set-key (kbd "C-p") 'previous-line)
+;;(global-set-key (kbd "C-n") 'my-next-line)
+;;(global-set-key (kbd "C-p") 'my-prev-line)
+;;(global-set-key (kbd "C-n") 'next-line)
+;;(global-set-key (kbd "C-p") 'previous-line)
 
 (defadvice previous-line (before check-is-later)
   (if (is-late-now)
@@ -996,7 +942,6 @@ occurence of CHAR."
 (global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
 
 
-
 (load-file "~/.emacs.d/anything.el")
 (load-file "~/.emacs.d/anything-match-plugin.el")
 (load-file "~/.emacs.d/anything-complete.el")
@@ -1011,10 +956,11 @@ occurence of CHAR."
 
 
 (global-set-key (kbd "C-x C-m") 'anything-execute-extended-command)
+(global-set-key (kbd "C-x m") 'anything-execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
 
 
-					;====================
+;;====================
 (require 'generic-x)
 
 (defface font-lock-function-call-face
@@ -1056,7 +1002,6 @@ occurence of CHAR."
 (project-load-all)
 (global-set-key (kbd "C-c i") 'project-regex-search)
 
-
 (require 'etags-select)
 
 ;;load the etags-select.el source code
@@ -1094,25 +1039,74 @@ otherwise raises an error."
 (add-hook 'emacs-startup-hook 
 	'(lambda () (jds-set-tags-file-path)))
 
-(require 'multi-term)
-(setq multi-term-program "/bin/bash")
-
-
-
 (require 'bookmark+)
  
 (global-set-key (kbd "C-c j") 'project-search-file-in-other-window)
 
-
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-;; Xrefactory configuration part ;;
+;;Xrefactory configuration part ;;
 (defvar xref-current-project nil) ;; can be also "my_project_name"
 (defvar xref-key-binding 'global) ;; can be also 'local or 'none
 (setq load-path (cons "/home/kang/xref/emacs" load-path))
 (setq exec-path (cons "/home/kang/xref" exec-path))
 (load "xrefactory")
 ;; end of Xrefactory configuration part ;;
-
+(global-set-key (kbd "C-c =") 'xref-completion)
 (message "xrefactory loaded")
+
+;; Windows Cycling
+(defun windmove-up-cycle()
+  (interactive)
+  (condition-case nil (windmove-up)
+    (error (condition-case nil (windmove-down)
+         (error (condition-case nil (windmove-right) 
+		  (error (condition-case nil (windmove-left) (error (windmove-up))))))))))
+
+(defun windmove-down-cycle()
+  (interactive)
+  (condition-case nil (windmove-down)
+    (error (condition-case nil (windmove-up)
+         (error (condition-case nil (windmove-left) 
+		  (error (condition-case nil (windmove-right) (error (windmove-down))))))))))
+
+(defun windmove-right-cycle()
+  (interactive)
+  (condition-case nil (windmove-right)
+    (error (condition-case nil (windmove-left)
+         (error (condition-case nil (windmove-up) 
+		  (error (condition-case nil (windmove-down) 
+			   (error (windmove-right))))))))))
+
+(defun windmove-left-cycle()
+  (interactive)
+  (condition-case nil (windmove-left)
+    (error (condition-case nil (windmove-right)
+         (error (condition-case nil (windmove-down) 
+		  (error (condition-case nil (windmove-up) (error (windmove-left))))))))))
+
+(global-set-key (kbd "C-c <up>") 'windmove-up-cycle)
+(global-set-key (kbd "C-c <down>") 'windmove-down-cycle)
+(global-set-key (kbd "C-c <right>") 'windmove-right-cycle)
+(global-set-key (kbd "C-c <left>") 'windmove-left-cycle)
+
+(define-key global-map [f11] 'eassist-switch-h-cpp)
+
+(require 'gccsense)
+
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (local-set-key (kbd "C-c .") 'gccsense-complete)
+            (local-set-key (kbd "C-c .") 'ac-complete-gccsense)))
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (gccsense-flymake-setup)))
+
+
+(require 'autopair)
+(autopair-global-mode) ;; enable autopair in all buffers
+
+(load-file "~/.emacs.d/viewer.el")
