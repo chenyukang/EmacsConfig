@@ -1,4 +1,4 @@
-;;======================  常用设置 ==============================;
+
 (require 'cl)
 (setq load-path (cons (expand-file-name "~/.emacs.d") load-path))
 
