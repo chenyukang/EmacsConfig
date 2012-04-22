@@ -1,0 +1,19 @@
+;; Emacs-W3 HTTP cookies file
+;; Automatically generated file!!! DO NOT EDIT!!!
+
+(setq url-cookie-storage
+ '(("www.moorekang.com"
+  [cookie "wordpress_723b93c7541a4fd4bb1581fc9f6bef65" "%7C1325656758%7C51dce65f4fc765b7c2ae4bfebafda1ec" "04-Jan-2012 05:59:18.00 GMT" "/wp-content/plugins" "www.moorekang.com" nil]
+  [cookie "httponly" nil "04-Jan-2012 05:59:18.00 GMT" "/wp-content/plugins" "www.moorekang.com" nil]
+  [cookie "wordpress_723b93c7541a4fd4bb1581fc9f6bef65" "%7C1325656758%7C51dce65f4fc765b7c2ae4bfebafda1ec" "04-Jan-2012 05:59:18.00 GMT" "/wp-admin" "www.moorekang.com" nil]
+  [cookie "httponly" nil "04-Jan-2012 05:59:18.00 GMT" "/wp-admin" "www.moorekang.com" nil]
+  [cookie "wordpress_logged_in_723b93c7541a4fd4bb1581fc9f6bef65" "%7C1325656758%7C0b0aa3bfe826b77a1858d0933bde4e96" "04-Jan-2012 05:59:18.00 GMT" "/" "www.moorekang.com" nil]
+  [cookie "httponly" nil "04-Jan-2012 05:59:18.00 GMT" "/" "www.moorekang.com" nil]))
+)
+(setq url-cookie-secure-storage
+ 'nil)
+
+;; Local Variables:
+;; version-control: never
+;; no-byte-compile: t
+;; End:

@@ -1,0 +1,31 @@
+<!-- Page published by Emacs Muse ends here -->
+    </div>
+    <div id="footer">
+          <div id="footlink">
+            <lisp>
+              (concat
+               "[ <a href=\""
+               (muse-wiki-resolve-project-page)
+               "\">Front</a> | <a href=\""
+               (muse-wiki-resolve-project-page (muse-project))
+               "\">" (car (muse-project)) "</a>"
+               " | <a href=\""
+               (muse-wiki-resolve-project-page (muse-project) "WikiIndex")
+               "\">Index</a> "
+               " | <a href=\""
+               (muse-wiki-resolve-project-page (muse-project) "RecentChanges")
+               "\">Changes</a> "
+               " | <a href=\""
+               "./wikisource/" (muse-page-name) "." muse-file-extension
+               "\">Source</a>"
+               " ]")
+            </lisp></div>
+            <div id="visitcounter">
+              你是第 <img border="0" src="http://cb.amazingcounters.com/counter.php?i=2200445&c=6601648" alt="counter"> 个访问者
+            </div>
+            <div id="footdate">
+            <lisp>(muse-publishing-directive "date")</lisp>更新
+            </div>
+    </div>
+</body>
+</html>

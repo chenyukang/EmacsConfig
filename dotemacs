@@ -1,0 +1,1256 @@
+;;======================  常用设置 ==============================;
+(require 'cl)
+(setq load-path (cons (expand-file-name "~/.emacs.d") load-path))
+
+
+(setq default-frame-alist
+      '((vertical-scroll-bars)
+	(top . 20)
+	(left . 45)
+	(width . 240)
+	(height . 260)
+	(tool-bar-lines . 0)
+	(menu-bar-lines . 1)
+	(right-fringe)
+	(left-fringe)))
+
+(require 'color-theme-zenburn)
+(color-theme-zenburn)
+
+(require 'cl)
+
+(setq inhibit-startup-message t)
+(tool-bar-mode nil)
+(scroll-bar-mode nil)
+(setq frame-title-format "%b@Emacs")
+
+(setq default-major-mode 'text-mode)
+(setq make-backup-files nil)
+(setq auto-save-mode nil)
+(setq-default make-backup-files nil)
+(recentf-mode 1)
+(global-visual-line-mode 1)
+(setq x-select-enable-clipboard t)
+(setq mouse-yank-at-point t)
+(setq require-final-newline t)
+(global-set-key [f4] 'other-window)
+;;(global-set-key [return] 'default-indent-new-line)
+
+;;'y' for 'yes', 'n' for 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq visible-bell t)
+(global-set-key [f10] 'undo) 
+(global-set-key (kbd "C-c y") 'delete-region)
+(global-auto-revert-mode t)
+
+(setq column-number-mode t)
+(setq line-number-mode t)
+
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(display-time)
+(global-set-key [C-tab] "\C-q\t") ; Control tab quotes a tab.
+(setq message-log-max nil)
+
+(defun my-fullscreen ()
+  (interactive)
+  (x-send-client-message
+   nil 0 nil "_NET_WM_STATE" 32
+   '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
+
+
+(require 'highlight-current-line)
+(require 'browse-kill-ring)
+(require 'filladapt)
+
+;;thinks
+(require 'thinks)
+
+(require 'color-theme)
+(require 'goto-last-change)
+;;(set-background-color "gray11")
+;;(set-background-color "dark slate gray")
+
+(add-to-list 'load-path "~/.emacs.d/auto-complete")
+(require 'auto-complete)
+(global-auto-complete-mode t)
+(define-key ac-complete-mode-map "\C-n" 'ac-next)
+(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+
+;;==================== yasnippet ==================== ;
+(add-to-list 'load-path "~/.emacs.d/yasnippet")
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/yasnippet/snippets")
+
+(defface ac-yasnippet-candidate-face
+  '((t (:background "sandybrown" :foreground "black")))
+  "Face for yasnippet candidate.")
+
+(defface ac-yasnippet-selection-face
+  '((t (:background "coral3" :foreground "white")))
+  "Face for the yasnippet selected candidate.")
+
+(defvar ac-source-yasnippet
+  '((candidates . ac-yasnippet-candidate)
+    (action . yas/expand)
+    (candidate-face . ac-yasnippet-candidate-face)
+    (selection-face . ac-yasnippet-selection-face))
+  "Source for Yasnippet.")
+
+
+;;==================== end yasnippet ====================;
+(global-set-key [(kbd "TAB")] 'hippie-expand)
+(setq hippie-expand-try-functions-list
+      '(
+	ac-complete
+	senator-try-expand-semantic
+	yas/hippie-try-expand
+        try-expand-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-expand-list
+        try-expand-list-all-buffers
+        try-expand-line
+        try-expand-line-all-buffers
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-whole-kill
+
+	;; ... other expand functions ...
+	)
+      )
+
+
+
+(global-hi-lock-mode 1) 
+
+(global-set-key[(f1)]
+	       (lambda()
+		 (interactive)
+		 (manual-entry(current-word))))
+
+(setq default-fill-column 150)
+(defun fill-buffer ()
+  "Fill each of the paragraphs in the buffer."
+  (interactive)
+  (let ((beg (point-min))
+        (end (point-max)))
+    (fill-region beg end)))
+(global-set-key (kbd "<C-tab>") 'fill-buffer)
+
+;;=================== the font for Chinese ===============;
+(create-fontset-from-fontset-spec
+ "-*-courier-medium-R-normal--16-*-*-*-*-*-fontset-mymono,
+chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1,
+chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--15-*-*-*-*-*-iso10646-1"
+ )
+(setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
+(set-frame-font "fontset-mymono")
+
+(set-scroll-bar-mode nil)
+
+(show-paren-mode t)
+(setq show-paren-style 'parentheses)
+(setq transient-mark-mode nil)
+(require 'linum)                                                   
+
+
+(defun my-mouse-buffer-menu ()
+  (interactive)
+  (let ((my-dummy-event `(mouse-1 (,(selected-window) 0 (100 . 0) 0 nil 0 (0 . 0) nil nil nil) 1)))
+    (mouse-buffer-menu my-dummy-event)))
+
+(global-set-key [f3] 'my-mouse-buffer-menu)
+(global-set-key (kbd "C-;") 'backward-kill-word)
+
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer 
+	(delq (current-buffer) 
+	      (remove-if-not 'buffer-file-name (buffer-list)))))
+
+
+
+(defun is-useless-buffer (buffer)
+  (let ((name (buffer-name buffer)))
+    (and (= ?* (aref name 0))
+         (not (or (string-match "^\\*shell\\*" name)
+		  (string-match "^\\*Cscope\\*" name))))))
+
+(defun kill-useless-buffers ()
+  (interactive)
+  (loop for buffer being the buffers
+        do (and (is-useless-buffer buffer) (kill-buffer buffer))))
+
+(defadvice previous-line (before clean-some-buffers)
+  (kill-useless-buffers))
+
+(ad-activate 'previous-line)
+;;========================= end window =================================
+
+
+
+
+;;========================= programming ===============================
+;;(require 'git)
+
+(defun my-indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\>")
+      (hippie-expand nil)
+    (indent-for-tab-command)))
+
+(require 'gprof)
+
+(load-file "~/.emacs.d/beautify-line.el")
+
+(require 'smart-compile)
+;;(load-file "~/.emacs.d/smart-compile.el")
+(global-set-key (kbd "<f6>") 'smart-compile)
+(global-set-key (kbd "<f10>") 'recompile)
+(global-set-key (kbd "C-c n") 'smart-compile-next-error) 
+
+
+(load-library "hideshow")
+(setq hs-minor-mode t)
+(add-hook 'c-mode-hook 'hs-minor-mode)
+(add-hook 'c++-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook 'hs-minor-mode)
+(add-hook 'perl-mode-hook 'hs-minor-mode)
+(add-hook 'php-mode-hookn 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+;; M-x hs-minor-mode
+;; C-c @ ESC C-s show all
+;; C-c @ ESC C-h hide all
+;; C-c @ C-s show block
+;; C-c @ C-h hide block
+;; C-c @ C-c toggle hide/show
+
+
+
+(defun my-c-mode-common-hook()
+  (setq tab-width 4 indent-tabs-mode nil)
+  ;; (hs-minor-mode t)
+  ;; hungry-delete and auto-newline
+  ;;(c-toggle-auto-hungry-state 1)
+  (c-set-style "stroustrup")	
+  (setq c-basic-offset 4) 
+  ;;(linum-mode)
+  (doxymacs-mode)
+  (define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding)
+  (define-key c-mode-base-map [(return)] 'newline-and-indent)
+  (define-key c-mode-base-map [(f7)] 'compile)
+  (define-key c-mode-base-map [(f8)] 'ff-get-other-file)
+  (define-key c-mode-base-map [(meta \`)] 'c-indent-command)
+  ;;  (define-key c-mode-base-map [(tab)] 'hippie-expand)
+  ;;(define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
+  (setq c-macro-shrink-window-flag t)
+  (setq c-macro-preprocessor "cpp")
+  (setq c-macro-cppflags " ")
+  (setq c-macro-prompt-flag t)
+  (setq abbrev-mode t)
+  )
+
+;;; add ifdef.el
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (require 'ifdef)
+	     (global-set-key [?\C-c ?\C-i] 'mark-ifdef)))
+
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(setq c-basic-offset 4)
+(setq c++-basic-offset 4)
+(defun my-c++-mode-hook()
+  (setq tab-width 8 indent-tabs-mode nil)
+  (setq c++-basic-offset 4) 
+  ;;(define-key c-mode-base-map [(control m)] 'semantic-ia-complete-symbol-menu)
+  )
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+(setq abbrev-mode t)
+(global-set-key (kbd "C-=") 'dabbrev-expand)
+;;(global-set-key [(f5)] 'speedbar)
+(global-set-key (kbd "C-c h") 'hs-hide-block)
+(global-set-key (kbd "C-c u") 'hs-show-block)
+
+(load-file "~/.emacs.d/cedet-1.0.1/common/cedet.el")
+(require 'semantic-ia)
+(require 'semantic-gcc)
+(require 'semanticdb)
+(global-semantic-mru-bookmark-mode 1)
+(global-semanticdb-minor-mode 1)
+(semantic-add-system-include "~/workspace/kang/predicate2/src" 'c++-mode)
+(semantic-add-system-include "~/workspace/kang/core/src" 'c++-mode)
+(semantic-add-system-include "~/workspace/kang/front/src" 'c++-mode)
+(semantic-add-system-include "~/workspace/kang/core/src/ExprDumper/" 'c++-mode)
+(semantic-add-system-include "~/workspace/kang/ndb/src/" 'c-mode)
+(semantic-add-system-include "~/workspace/kang/pli3/src/PLI/" 'c-mode)
+(semantic-add-system-include "~/workspace/kang/ndb/src/" 'c++-mode)
+
+(defun my-semantic-hook ()
+  (imenu-add-to-menubar "TAGS"))
+(add-hook 'semantic-init-hooks 'my-semantic-hook)
+
+(defun my-cedet-hook ()
+  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle))
+(add-hook 'c-mode-common-hook 'my-cedet-hook)
+
+(eval-after-load "semantic-complete"
+  '(setq semantic-complete-inline-analyzer-displayor-class
+	 semantic-displayor-ghost))
+(local-set-key (kbd "M-/") 'semantic-complete-analyze-inline) 
+
+(setq semanticdb-project-roots
+      (list
+       (expand-file-name "/")))
+
+(setq semanticdb-default-save-directory
+      (expand-file-name "~/.emacs.d/semanticdb")) 
+
+(setq semanticdb-search-system-databases t)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (setq semanticdb-project-system-databases
+                  (list (semanticdb-create-database
+			 semanticdb-new-database-class
+			 "/usr/include")))))
+
+
+;; (defun my-cedet-hook ()
+;;   (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+;;   (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle))
+;; (add-hook 'c-mode-common-hook 'my-cedet-hook)
+
+(defun my-semantic-hook ()
+  (imenu-add-to-menubar "TAGS"))
+(add-hook 'semantic-init-hooks 'my-semantic-hook)
+
+
+
+;;(semanticdb-enable-gnu-global-databases 'c-mode)
+;;(semanticdb-enable-gnu-global-databases 'c++-mode) 
+
+;;====================doxymacs====================;
+(add-to-list 'load-path "~/.emacs.d/doxymacs")
+(require 'doxymacs)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+(add-hook 'c++-mode-hook 'doxymacs-mode)
+
+
+(setq ansi-color-names-vector
+      ["black" "red" "green" "yellow" "sky blue" "magenta" "cyan" "yellow"])
+
+(custom-set-variables
+ '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
+ '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
+ '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
+ '(comint-completion-autolist t)        ; show completion list when ambiguous
+ '(comint-input-ignoredups t)           ; no duplicates in command history
+ '(comint-completion-addsuffix t)       ; insert space/slash after file completion
+ )
+
+(ansi-color-for-comint-mode-on)
+
+(defun open-eshell-in-another-buffer-for-run ()
+  "Open eshell in other buffer for run a program"
+  (interactive)
+  (setq file-name 
+	(concat "./" (car (split-string 
+			   (file-name-nondirectory buffer-file-name) "\\."))))
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (shell)
+  (goto-char (point-max))
+  (insert file-name))
+
+(defun skip-this-line()
+  (interactive)
+  (move-end-of-line nil)
+  (insert " //~"))
+
+(global-set-key (kbd "C-x \\") 'skip-this-line)
+
+(global-set-key (kbd "C-c o") 'open-eshell-in-another-buffer-for-run)
+
+
+(add-hook 'eshell-mode-hook
+	  '(lambda nil
+	     (setq exec-path (cons "~/apps/bin/" exec-path))
+	     (local-set-key "\C-u" 'eshell-kill-input))
+	  )
+
+(defun open-eshell-and-test-program ()
+  (interactive)
+  (setq file-name 
+	(concat "KangTester " 
+		(concat "./"
+			(car (split-string 
+			      (file-name-nondirectory 
+			       buffer-file-name) "\\.")))))
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (eshell)
+  (goto-char (point-max))
+  (insert file-name))
+
+(global-set-key (kbd "C-x t") 'open-eshell-and-test-program)
+
+(defun open-eshell-now ()
+  "Open eshell"
+  (interactive)
+  (delete-other-windows)
+  (split-window-vertically)
+  (other-window 1)
+  (shell))
+(global-set-key (kbd "C-c e") 'open-eshell-now)
+
+
+(defun go-to-other-window-and-close-this-one()
+  "Go to other window and close current window"
+  (interactive)
+  (kill-buffer (current-buffer))
+  (next-buffer)
+  (delete-other-windows))
+(global-set-key (kbd "C-c k") 'go-to-other-window-and-close-this-one)
+
+
+(defun copy-current-buffer()
+  "Copy crerent buffer to kill ring : by Chen Yukang"
+  (interactive)
+  (setq position (point))
+  (kill-ring-save (point-min) (point-max))
+  (goto-char position))
+(global-set-key (kbd "C-c C-v") 'copy-current-buffer)
+
+(defun indent-current-buffer()
+  "indent current-buffer with C-c C-q"
+  (interactive)
+  (setq position (point))
+  (indent-region (point-min) (point-max))
+  (goto-char position))
+
+(defun eshell-scroll-conservatively () 
+  "Add to shell-mode-hook to prevent jump-scrolling on newlines in shell buffers." 
+  (set (make-local-variable 'scroll-conservatively) 40) 
+  (setq scroll-step 1) 
+  (setq scroll-margin 0)) 
+(add-hook 'eshell-mode-hook 'eshell-scroll-conservatively)
+(global-set-key (kbd "C-c C-q") 'indent-current-buffer)
+
+
+(require 'shell-command)
+(shell-command-completion-mode)
+
+
+(defun comint-close-completions ()
+  "Close the comint completions buffer.
+Used in advice to various comint functions to automatically close
+the completions buffer as soon as I'm done with it. Based on
+Dmitriy Igrishin's patched version of comint.el."
+  (if comint-dynamic-list-completions-config
+      (progn
+        (set-window-configuration comint-dynamic-list-completions-config)
+        (setq comint-dynamic-list-completions-config nil))))
+
+(defadvice comint-send-input (after close-completions activate)
+  (comint-close-completions))
+
+(defadvice comint-dynamic-complete-as-filename (after close-completions activate)
+  (if ad-return-value (comint-close-completions)))
+
+(defadvice comint-dynamic-simple-complete (after close-completions activate)
+  (if (member ad-return-value '('sole 'shortest 'partial))
+      (comint-close-completions)))
+
+(defadvice comint-dynamic-list-completions (after close-completions activate)
+  (comint-close-completions)
+  (if (not unread-command-events)
+      ;; comint's "Type space to flush" swallows space. put it back in.
+      (setq unread-command-events (listify-key-sequence " "))))
+
+
+;;=========subversion===============;
+(require 'psvn)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+ ;; Your init file should contain only one such instance.
+ '(jde-check-version-flag nil))
+(add-to-list 'load-path "~/.emacs.d/ecb")
+(require 'ecb) 
+(require 'ecb-autoloads)
+(define-key global-map [(control f9)] 'ecb-restore-default-window-sizes)
+
+(defun my-toggle-ecb()
+  (interactive)
+  (ecb-activate)
+  (ecb-toggle-ecb-windows))
+
+(define-key global-map (kbd "C-c '") 'my-toggle-ecb)
+(add-hook 'ecb-deactivate-hook 
+	  '(lambda ()
+	     (ecb-disable-advices 'ecb-winman-not-supported-function-advices t)))
+
+;;===================== python promgramming mode ====================;
+(auto-fill-mode)
+(require 'ctypes)
+(setq auto-mode-alist
+      (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist
+      (cons '("python" . python-mode)
+	    interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+;;; add these lines if you like color-based syntax highlighting
+
+;;==================== end python ====================;;
+
+;; -*- Emacs-Lisp -*-
+(require 'highlight-symbol)
+(require 'sgml-mode)
+(setq highlight-symbol-idle-delay 0.5)
+(highlight-symbol-mode 1)
+(defun highlight-symbol-mode-on ()
+  "Turn on function `highlight-symbol-mode'."
+  (highlight-symbol-mode 1))
+(defun highlight-symbol-mode-off ()
+  "Turn off function `highlight-symbol-mode'."
+  (highlight-symbol-mode -1))
+(dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook java-mode-hook
+				     c-mode-common-hook text-mode-hook ruby-mode-hook html-mode-hook))
+  (add-hook hook 'highlight-symbol-mode-on))
+
+(global-set-key [(control f3)] 'highlight-symbol-at-point)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-prev)
+(global-set-key [(meta f3)] 'highlight-symbol-prev)
+(global-set-key (kbd "C-c r"  ) 'highlight-symbol-query-replace)
+(global-set-key (kbd "C-c M-N") 'highlight-symbol-next-in-defun)
+(global-set-key (kbd "C-c M-P") 'highlight-symbol-prev-in-defun)
+(define-globalized-minor-mode global-highlight-symbol-mode highlight-symbol-mode highlight-symbol-mode)
+(global-highlight-symbol-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+;; Highlight  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+
+(add-to-list 'load-path "~/.emacs.d/ruby-mode/")
+(autoload 'ruby-mode "ruby-mode"
+  "Mode for editing ruby source files" t)
+(setq auto-mode-alist
+      (append '(("//.rb$" . ruby-mode)) auto-mode-alist))
+(setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
+                                     interpreter-mode-alist))
+(autoload 'run-ruby "inf-ruby"
+  "Run an inferior Ruby process")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+	     (inf-ruby-keys)))
+
+
+
+;;==================== end programming ===================;
+
+;;==================== other extension ===================;
+;;some extension
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+
+(require 'tabbar)
+(tabbar-mode)
+(global-set-key (kbd "C-c b") 'tabbar-backward-group)
+(global-set-key (kbd "C-c f") 'tabbar-forward-group)
+(global-set-key (kbd "C-x [") 'tabbar-backward)
+(global-set-key (kbd "C-x ]") 'tabbar-forward)
+(global-set-key (kbd "C-c ]") 'previous-buffer)
+(global-set-key (kbd "C-c [") 'next-buffer)
+
+(require 'xcscope)
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (require 'xcscope)))
+(add-hook 'c++-mode-common-hook
+	  '(lambda() 
+	     (require 'xcscope)))
+
+
+(load "desktop") 
+(desktop-save-mode) 
+
+;;the go-to-char
+(defun wy-go-to-char (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `wy-go-to-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  (interactive "p\ncGo to char: ")
+  (search-forward (string char) nil nil n)
+  (while (char-equal (read-char)
+		     char)
+    (search-forward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event)))
+
+(define-key global-map (kbd "C-c a") 'wy-go-to-char)
+(define-key global-map (kbd "C-c t") 'find-tag)
+(put 'narrow-to-region 'disabled nil)
+
+
+
+;;convert text files between unix and dos
+(defun dos-unix () (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\r" nil t) (replace-match "")))
+(defun unix-dos () (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\n" nil t) (replace-match "\r\n")))
+
+
+(require 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(setq auto-mode-alist
+      (append '(("\\.cpp$" . c++-mode)
+		("\\.hpp$" . c++-mode)
+		("\\.h$" . c-mode)
+		("\\.hh$" . c++-mode)
+		("\\.lsp$" . lisp-mode)
+		("\\.scm$" . scheme-mode)
+		("\\.pl$" . perl-mode)
+		("\\.hs$". haskell-mode)
+		("\\.vhd$" . text-mode)
+		("\\.rb$"  . ruby-mode)
+		) auto-mode-alist))
+
+
+;; Pretty diff mode
+(autoload 'ediff-buffers "ediff" "Intelligent Emacs interface to diff" t)
+(autoload 'ediff-files "ediff" "Intelligent Emacs interface to diff" t)
+(autoload 'ediff-files-remote "ediff"
+  "Intelligent Emacs interface to diff")
+;;======================= end other extension ==================;
+
+					;
+(add-to-list 'load-path "~/.emacs.d/")
+(load-file  "~/.emacs.d/xml-rpc.el")
+(load-file  "~/.emacs.d/weblogger.el")
+(require 'weblogger)
+(setq weblogger-weblog-alist nil)
+(add-hook 'weblogger-entry-mode-hook
+	  (lambda ()
+	    (setq fill-column 4000)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ecb-directories-menu-user-extension-function (quote ignore))
+ '(ecb-eshell-auto-activate nil)
+ '(ecb-eshell-enlarge-when-eshell nil)
+ '(ecb-eshell-fit-window-to-command-output nil)
+ '(ecb-eshell-synchronize nil)
+ '(ecb-history-menu-user-extension-function (quote ignore))
+ '(ecb-layout-name "Xiaokang")
+ '(ecb-layout-window-sizes (quote (("Xiaokang" (ecb-methods-buffer-name 0.1736842105263158 . 0.9857142857142858) (ecb-directories-buffer-name 0.1631578947368421 . 0.4857142857142857) (ecb-sources-buffer-name 0.1631578947368421 . 0.5)) ("chenyukang" (ecb-directories-buffer-name 0.1693121693121693 . 0.49230769230769234) (ecb-sources-buffer-name 0.1693121693121693 . 0.49230769230769234) (ecb-methods-buffer-name 0.14814814814814814 . 0.9846153846153847)))))
+ '(ecb-methods-general-face (quote ecb-methods-general-face))
+ '(ecb-methods-menu-user-extension-function (quote ignore))
+ '(ecb-options-version "2.40")
+ '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
+ '(ecb-source-path (quote (("/home/yukang/" #("/" 0 1 (mouse-face highlight help-echo tree-buffer-help-echo-fn))) ("/" "/") "/home/yukang/workspace/yukang/trace2_onehot")))
+ '(ecb-sources-menu-user-extension-function (quote ignore))
+ '(ecb-tag-display-function (quote ((default . ecb-format-tag-name))))
+ '(ecb-tip-of-the-day nil)
+ '(vhdl-electric-keywords (quote (vhdl)))
+ '(weblogger-config-alist (quote (("moorekang" "http://www.moorekang.com/xmlrpc.php" "admin" "" "1") ("default" "http://www.moorekang.com/xmlrpc.php" "admin" "hahakang" "1")))))
+;;(custom-set-faces
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+;; )
+
+;;==================== muse ==================== 
+(load-file "~/.emacs.d/muse_kang.el")
+
+;;==================== gdb ==================== ;;
+(setq gdb-many-windows t)
+;;...
+(load-library "multi-gud.el")
+(load-library "multi-gdb-ui.el")
+(global-set-key [(f7)] 'gud-step)
+(global-set-key [(f8)] 'gud-next)
+
+
+(load-file "~/.emacs.d/jump-dls.el")
+(require 'jump)
+(global-set-key [f12] 'my-jump-symbol)
+
+(defadvice  cscope-find-this-symbol (before save-pos activate)
+  (window-configuration-to-register 1))
+
+(ad-activate 'cscope-find-this-symbol)
+
+
+(defun my-restore-window-configuration ()
+  (interactive)
+  (jump-to-register 0))
+
+(defun jump-at-point()
+  (interactive)
+  (setq position (point))
+  (jump-symbol-at-point)
+  (goto-char position))
+
+
+(put 'set-goal-column 'disabled nil)
+
+(add-to-list 'load-path "~/.emacs.d/magit")
+(load-file "~/.emacs.d/magit/magit.el")
+(require 'magit)
+
+(defun flush-up-window()
+  (interactive)
+  (other-window 1)
+  (revert-buffer t t)
+  (other-window 1))
+
+(global-set-key [f5] 'flush-up-window)
+
+(defun close-this-buffer()
+  (interactive)
+  (kill-buffer (buffer-name)))
+(global-set-key (kbd "C-w") 'close-this-buffer)
+(global-set-key (kbd "C-c C-k") 'kill-region)
+
+(load-file "~/.emacs.d/auto/autoconfig.el")
+
+(defun is-late-now()
+  "Check if it is now late, emmm, go to sleep"
+  (let ((hr (nth 2 (decode-time (current-time))))
+	(minute (nth 1 (decode-time (current-time)))))
+    (and (and (>= hr 22) 
+	      (>= minute 40)
+	      (message "prepare sleep now...."))
+	 (>= minute 50))))
+
+;;(global-set-key (kbd "C-n") 'my-next-line)
+;;(global-set-key (kbd "C-p") 'my-prev-line)
+;;(global-set-key (kbd "C-n") 'next-line)
+;;(global-set-key (kbd "C-p") 'previous-line)
+
+(defadvice previous-line (before check-is-later)
+  (if (is-late-now)
+      (progn 
+	(message "late now, prepare go to sleep"))))
+
+
+;; (ad-activate 'previous-line)
+
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (let ((col (current-column))
+        start
+        end)
+    (beginning-of-line)
+    (setq start (point))
+    (end-of-line)
+    (forward-char)
+    (setq end (point))
+    (let ((line-text (delete-and-extract-region start end)))
+      (forward-line n)
+      (insert line-text)
+      ;; restore point to original column in moved line
+      (forward-line -1)
+      (forward-char col))))
+
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
+
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
+
+(global-set-key (kbd "<M-down>") 'move-line-down)
+(global-set-key (kbd "<M-up>") 'move-line-up)
+
+
+
+
+;; -*- Emacs-Lisp -*-
+
+;; Time-stamp: <2010-02-25 19:35:15 Thursday by ahei>
+
+(require 'pulse)
+
+
+(defadvice exchange-point-and-mark-nomark (after pulse-advice activate)
+  "Cause the line that is `goto'd to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p)
+	     (> (abs (- (point) (mark))) 400))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice switch-to-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice ido-switch-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice switch-to-other-buffer (after pulse-advice activate)
+  "Cause the current line of new buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice visit-.emacs (after pulse-advice activate)
+  "Cause the current line of .emacs buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice beginning-of-buffer (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+(defadvice scroll-up (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+
+(defadvice scroll-down (after pulse-advice activate)
+  "Cause the current line of buffer to pulse when the cursor gets there."
+  (when (and pulse-command-advice-flag (interactive-p))
+    (pulse-momentary-highlight-one-line (point))))
+
+					;(pulse-toggle-integration-advice (if window-system 1 -1))
+
+
+(require 'window-number)
+(window-number-mode)
+
+
+(defun my-backup-window-configuration ()
+  (interactive)
+  (window-configuration-to-register 0))
+
+(defun my-restore-window-configuration ()
+  (interactive)
+  (jump-to-register 0))
+
+(global-set-key (kbd "C-c C-s") 'my-backup-window-configuration)
+(global-set-key (kbd "C-c C-j") 'my-restore-window-configuration)
+
+
+(require 'ido)
+(ido-mode t)
+
+(load-file "~/.emacs.d/anything.el")
+(load-file "~/.emacs.d/anything-match-plugin.el")
+(load-file "~/.emacs.d/anything-complete.el")
+;; (require 'anything-complete)
+;; (anything-read-string-mode 1)
+;; Bind C-o to complete shell history
+(anything-complete-shell-history-setup-key "\C-o")
+
+;; (add-to-list 'load-path "~/.emacs.d/company")
+;; (autoload 'company-mode "company" nil t)
+					;(company-mode)
+
+(global-set-key (kbd "C-x C-f") 'ido-find-file)
+(global-set-key (kbd "C-x f") 'ido-find-file)
+(global-set-key (kbd "C-x m") 'anything-execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'anything-execute-extended-command)
+(global-set-key (kbd "C-c m")   'anything-execute-extended-command)
+
+
+;;====================
+(require 'generic-x)
+
+(put 'dired-find-alternate-file 'disabled nil)
+(defun dired-toggle-display-hinden-file ()
+  "Toggle to display hiden files when dired"
+  (interactive)
+  (let ((lsarg dired-listing-switches) (dir (dired-current-directory)))
+    (if (equal lsarg "-lh")
+        (setq lsarg "-alh")
+      (setq lsarg "-lh"))
+    (setq dired-listing-switches lsarg)
+    ;; dired's rule:"If dirname is already in a dired buffer,
+    ;; that buffer is used without refresh." so kill first
+    (kill-buffer (current-buffer))
+    (dired dir)))
+
+
+(require 'project-mode)
+(project-load-all)
+(global-set-key (kbd "C-c i") 'project-regex-search)
+
+
+(require 'etags-select)
+
+;;load the etags-select.el source code
+;;binding the key
+(global-set-key "\M-?" 'etags-select-find-tag-at-point)
+(global-set-key "\M-." 'etags-select-find-tag)
+
+(defun jds-find-tags-file ()
+  "recursively searches each parent directory for a file named 'TAGS' and returns the
+path to that file or nil if a tags file is not found. Returns nil if the buffer is
+not visiting a file"
+  (progn
+    (defun find-tags-file-r (path)
+      "find the tags file from the parent directories"
+      (let* ((parent (file-name-directory path))
+	     (possible-tags-file (concat parent "TAGS")))
+	(cond
+	 ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
+	 ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
+	 (t (find-tags-file-r (directory-file-name parent))))))
+
+    (if (buffer-file-name)
+        (catch 'found-it 
+          (find-tags-file-r (buffer-file-name)))
+      (error "buffer is not visiting a file"))))
+
+(defun jds-set-tags-file-path ()
+  "calls `jds-find-tags-file' to recursively search up the directory tree to find
+a file named 'TAGS'. If found, set 'tags-table-list' with that path as an argument
+otherwise raises an error."
+  (interactive)
+  (setq tags-table-list (cons (jds-find-tags-file) tags-table-list)))
+
+;; delay search the TAGS file after open the source file
+(add-hook 'emacs-startup-hook 
+	  '(lambda () (jds-set-tags-file-path)))
+
+(require 'bookmark+)
+
+(global-set-key (kbd "C-c j") 'project-search-file-in-other-window)
+
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+
+
+;; Windows Cycling
+(defun windmove-up-cycle()
+  (interactive)
+  (condition-case nil (windmove-up)
+    (error (condition-case nil (windmove-down)
+	     (error (condition-case nil (windmove-right) 
+		      (error (condition-case nil (windmove-left) (error (windmove-up))))))))))
+
+(defun windmove-down-cycle()
+  (interactive)
+  (condition-case nil (windmove-down)
+    (error (condition-case nil (windmove-up)
+	     (error (condition-case nil (windmove-left) 
+		      (error (condition-case nil (windmove-right) (error (windmove-down))))))))))
+
+(defun windmove-right-cycle()
+  (interactive)
+  (condition-case nil (windmove-right)
+    (error (condition-case nil (windmove-left)
+	     (error (condition-case nil (windmove-up) 
+		      (error (condition-case nil (windmove-down) 
+			       (error (windmove-right))))))))))
+
+(defun windmove-left-cycle()
+  (interactive)
+  (condition-case nil (windmove-left)
+    (error (condition-case nil (windmove-right)
+	     (error (condition-case nil (windmove-down) 
+		      (error (condition-case nil (windmove-up) (error (windmove-left))))))))))
+
+(global-set-key (kbd "C-c <up>") 'windmove-up-cycle)
+(global-set-key (kbd "C-c <down>") 'windmove-down-cycle)
+(global-set-key (kbd "C-c <right>") 'windmove-right-cycle)
+(global-set-key (kbd "C-c <left>") 'windmove-left-cycle)
+
+(load-file "~/.emacs.d/viewer.el")
+(buffer-file-name)
+
+(defun file-name-of-this-buffer ()
+  (interactive)
+  (message (buffer-file-name)))
+
+(global-set-key [f2] 'file-name-of-this-buffer)
+
+
+(appt-activate)
+(setq todo-file-do "~/.emacs.d/todo/do")
+(setq todo-file-done "~/.emacs.d/todo/done")
+(setq todo-file-top "~/.emacs.d/todo/top")
+(setq diary-file "~/.emacs.d/todo/diary")
+(add-hook 'diary-hook 'appt-make-list)
+(display-time)
+(diary 0)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(highlight-symbol-face ((((class color) (background dark)) (:background "LightPink4")))))
+
+
+(setq mail-default-headers
+      "Reply-to: yukang@nextopsoftware.com\nFCC: ~/Mail/sent")
+
+
+(defun get-continue-string ()
+  (interactive)
+  (skip-chars-backward "^ \t\n\"\'\(\)\<\>\!\&\;\\\[\]")
+  (setq low (point))
+  (skip-chars-forward "^ \t\n\"\'\(\)\<\>\!\&\;\\\[\]")
+  (setq high (point))
+  (copy-region-as-kill low high)
+  (message (buffer-substring low high)))
+
+(global-set-key (kbd "C-x y") 'get-continue-string)
+
+
+(defun prelude-google ()
+  "Googles a query or region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "Google: ")))))
+
+;;(server-start)
+
+(load-file "~/.emacs.d/eproject/eproject.el")
+
+
+;;rebind exit emacs keys
+(global-set-key (kbd "C-x C-c") 'close-this-buffer)
+
+
+(defvar mru-tag-stack '()
+  "Tag stack, when jumping to new tag, current tag will be stored here,
+and when jumping back, it will be removed.")
+
+(defun yc/store-mru-tag (pt)
+  "Store tag info into mru-tag-stack"
+  (interactive "d")
+  (let* ((tag (semantic-mrub-find-nearby-tag pt)))
+    (if tag
+        (let ((sbm (semantic-bookmark (semantic-tag-name tag)
+                                      :tag tag)))
+          (semantic-mrub-update sbm pt 'mark)
+          (add-to-list 'mru-tag-stack sbm)
+          )
+      (error "No tag to go!")))
+  )
+
+(defun yc/goto-func (pt)
+  "Store current postion and call (semantic-ia-fast-jump)"
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-ia-fast-jump pt)
+  )
+
+(defun yc/goto-func-any (pt)
+  "Store current postion and call (semantic-ia-fast-jump)"
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-complete-jump)
+  )
+
+(defun yc/symref (pt)
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-symref))
+
+(defun yc/return-func()
+  "Return to previous tag."
+  (interactive)
+  (if (car mru-tag-stack)
+      (semantic-mrub-switch-tags (pop mru-tag-stack))
+    (error "TagStack is empty!")))
+
+(defun setup-program-keybindings()
+  ;;;; Common program-keybindings
+  (interactive)
+  (local-set-key "\C-cR" 'yc/symref)
+  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
+  (local-set-key "\C-c\C-j" 'yc/goto-func-any)
+  (local-set-key "\C-cj" 'yc/goto-func)
+  (local-set-key [S-f12] 'yc/return-func)
+  (local-set-key [M-S-f12] 'yc/return-func)
+  (local-set-key (kbd "C-x SPC") 'yc/store-mru-tag)
+  )
+
+(define-key global-map [f12] 'yc/goto-func)
+(global-set-key [(shift f12)] 'yc/return-func)
+
+
+(load-file "~/.emacs.d/winring.el")
+(require 'winring)
+(winring-initialize)
+
+(autoload 'mmm-mode "mmm-mode" "Multiple Major Modes" t)
+(autoload 'mmm-parse-buffer "mmm-mode" "Automatic MMM-ification" t)
+
+(defun ska-point-to-register()
+  "Store cursorposition _fast_ in a register. 
+Use ska-jump-to-register to jump back to the stored 
+position."
+  (interactive)
+  (setq zmacs-region-stays t)
+  (point-to-register 8))
+
+(defun ska-jump-to-register()
+  "Switches between current cursorposition and position
+that was stored with ska-point-to-register."
+  (interactive)
+  (setq zmacs-region-stays t)
+  (let ((tmp (point-marker)))
+    (jump-to-register 8)
+    (set-register 8 tmp)))
+
+(global-set-key [(control ?\.)] 'ska-point-to-register)
+(global-set-key [(control ?\,)] 'ska-jump-to-register)
+
+
+(defface font-lock-function-call-face
+  '((t (:foreground "sky blue")))
+  "Font Lock mode face used to highlight function calls."
+  :group 'font-lock-highlighting-faces)
+
+(defvar font-lock-function-call-face 'font-lock-function-call-face)
+(add-hook 'c-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+;; (add-hook 'c++-mode-hook
+;;           (lambda ()
+;;             (font-lock-add-keywords
+;;              nil
+;;              '(("\\<\\(\\sw+\\) ?(" 1 font-lock-function-call-face)) t)))
+
+
+(dolist (command '(yank yank-pop))
+  (eval
+   `(defadvice ,command (after indent-region activate)
+      (and (not current-prefix-arg)
+	   (member major-mode
+		   '(emacs-lisp-mode
+		     lisp-mode
+		     clojure-mode
+		     scheme-mode
+		     haskell-mode
+		     ruby-mode
+		     rspec-mode
+		     python-mode
+		     c-mode
+		     c++-mode
+		     objc-mode
+		     latex-mode
+		     js-mode
+		     plain-tex-mode))
+	   (let ((mark-even-if-inactive transient-mark-mode))
+	     (indent-region (region-beginning) (region-end) nil))))))
+
+
+;; only needed if you use autopair
+(add-hook 'term-mode-hook
+	  #'(lambda () (setq autopair-dont-activate t)))
+
+
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy the current line."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (progn
+       (message "Current line is copied.")
+       (list (line-beginning-position) (line-beginning-position 2)) ) ) ))
+
+(defadvice kill-region (before slick-copy activate compile)
+  "When called interactively with no active region, cut the current line."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (progn
+       (list (line-beginning-position) (line-beginning-position 2)) ) ) ))
+
+
+(global-set-key (kbd "C-c k") 'kill-region) ; cut.
+(global-set-key (kbd "M-w") 'kill-ring-save) ; copy.
+
+
+
+
+(set-face-attribute 'tabbar-default-face nil  
+                    :family "DejaVu Sans Mono"  
+                    :background "gray80"  
+                    :foreground "gray30"  
+                    :height 0.2
+                    )
+(set-face-attribute 'tabbar-button-face nil  
+                    :inherit 'tabbar-default  
+                    :box '(:line-width 1 :color "yellow70")  
+                    )  
+(set-face-attribute 'tabbar-selected-face nil  
+                    :inherit 'tabbar-default  
+                    :foreground "DarkGreen"  
+                    :background "LightGoldenrod"  
+                    :box '(:line-width 1 :color "DarkGoldenrod")  
+                    :overline "rosy brown"  
+                    :underline "rosy brown"  
+                    :weight 'bold  
+                    )
+(set-face-attribute 'tabbar-unselected-face nil  
+                    :inherit 'tabbar-default  
+                    :box '(:line-width 1 :color "#00B2BF")  
+                    )
+
+;;;###autoload
+(defun switch-source-file ()
+  (interactive)
+  (setq file-name (buffer-file-name))
+  (cond ((string-match "\\.cpp" file-name)
+	 (find-file (replace-regexp-in-string "\\.cpp" "\.h" file-name)))
+	((string-match "\\.cc" file-name)
+	 (find-file (replace-regexp-in-string "\\.cc" "\.hh" file-name)))
+	((string-match "\\.hh" file-name)
+	 (find-file (replace-regexp-in-string "\\.hh" "\.cc" file-name)))
+	((string-match "\\.h" file-name)
+	 (find-file (replace-regexp-in-string "\\.h" "\.c" file-name)))
+	((string-match "\\.c" file-name)
+	 (find-file (replace-regexp-in-string "\\.c" "\.h" file-name)))
+	((string-match "\\.h" file-name)
+	 (find-file (replace-regexp-in-string "\\.h" "\.cpp" file-name)))))
+
+(global-set-key [f11] 'switch-source-file)
+
+(setq winner-dont-bind-my-keys t)
+(winner-mode t)
+(global-set-key (kbd "C-x ;") 'winner-undo)
+(global-set-key (kbd "C-x '") 'winner-redo)
+

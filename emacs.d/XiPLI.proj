@@ -1,0 +1,13 @@
+(progn
+  (let
+      ((project
+	(project-create "XiPLI")))
+    (project-search-paths-set project
+			      '("~/workspace/Hima/pli3/src/PLI/"))
+    (project-tags-form-set project
+			   '(".*"
+			     ('etags)))
+    (project-search-exclusion-regexes-set project
+					  '("\\.svn" "\\.jar$" "\\.class$" "\\.exe$" "\\.png$" "\\.gif$" "\\.jpg$" "\\.jpeg$" "\\.ico$" "\\.log$" "\\.rtf$" "\\.bin$" "\\.tar$" "\\.tgz$" "\\.gz$" "\\.bz2$" "\\.zip$" "\\.rar$" "\\.cab$" "\\.msi$" "\\.o$" "\\.a$" "\\.dll$" "\\.pdf$" "\\.tmp$" "\\.war$" "\\bTAGS\\b"))
+    (project-fuzzy-match-tolerance-set project 20)
+    nil))

@@ -1,0 +1,15 @@
+;; -*- mode: Lisp; -*-
+
+(setq prj-version nil)
+
+(setq prj-list
+      '(("pli" "/home/yukang/workspace/kanglocal/pli3/." "PLI.cfg")))
+
+(setq prj-last-open nil)
+
+(setq prj-frame-pos
+      '((top . 0)
+	(left . 0)
+	(width . 190)
+	(height . 70)))
+
